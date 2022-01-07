@@ -73,7 +73,7 @@
       "dependencies": {}
     },
     "com.unity.2d.tilemap.extras": {
-      "version": "file:2d-extras-master",
+      "version": "file:2d-extras-2020.3",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
