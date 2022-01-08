@@ -22,12 +22,18 @@ public class PlayerController : MonoBehaviour
         get { return currentHealth; }
         set { currentHealth = value; }
     }
-    public float speed = 3.5f;
+    public float speed = 2.5f;
+
+    //look direction
+    Vector2 lookDirection = new Vector2(0, 0);
+    //Animation
+    private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -43,6 +49,22 @@ public class PlayerController : MonoBehaviour
             {
                 isInvincible = false;
             }
+        }
+
+        Vector2 move = new Vector2(horizontal, vertical);
+        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        {
+            lookDirection.Set(move.x, move.y);
+            lookDirection.Normalize();
+        }
+
+        animator.SetFloat("Look X", lookDirection.x);
+        animator.SetFloat("Look Y", lookDirection.y);
+        animator.SetFloat("Speed", move.magnitude);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CastSpell();
         }
     }
 
@@ -72,4 +94,10 @@ public class PlayerController : MonoBehaviour
         Debug.Log(currentHealth + "/" + maxHealth);
         //UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
     }
+
+    private void CastSpell()
+    {
+        animator.SetTrigger("Cast Spell");
+    }
+
 }

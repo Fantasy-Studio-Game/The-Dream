@@ -19,7 +19,7 @@ public class LavaScript : MonoBehaviour
     void OnTriggerStay2D(Collider2D collision)
     {
         //Debug.Log(collision);
-        FeetCollider controller = collision.GetComponent<FeetCollider>();
+        PlayerController controller = collision.GetComponent<PlayerController>();
         if (controller != null)
         {
             controller.ChangeHealth(-1);
