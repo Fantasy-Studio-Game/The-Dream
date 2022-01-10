@@ -17,6 +17,10 @@ public class PlayerController : MonoBehaviour
     //health
     public int maxHealth = 5;
     int currentHealth;
+
+    public int maxHearts = 3;
+    int currentHearts = 3;
+
     public int health
     {
         get { return currentHealth; }
@@ -34,6 +38,7 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
+        HeartSystem.instance.SetValue(currentHearts, maxHearts);
     }
 
     // Update is called once per frame
@@ -91,8 +96,16 @@ public class PlayerController : MonoBehaviour
             invincibleTimer = timeInvincible;
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        Debug.Log(currentHealth + "/" + maxHealth);
+
+        if (currentHealth < 0.001)
+        {
+            currentHearts--;
+            HeartSystem.instance.SetValue(currentHearts, maxHearts);
+            currentHealth = maxHealth;
+        }
         UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
+
+
     }
 
     private void CastSpell()
