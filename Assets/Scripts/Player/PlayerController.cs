@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     float vertical;
 
     //Timer for damage
-    public float timeInvincible = 2.0f;
+    public float timeInvincible = 0.6f;
     bool isInvincible;
     float invincibleTimer;
 
@@ -19,7 +19,9 @@ public class PlayerController : MonoBehaviour
     int currentHealth;
 
     public int maxHearts = 3;
-    int currentHearts = 3;
+    int currentHearts;
+
+    bool isAllowMoving = true;
 
     public int health
     {
@@ -43,6 +45,7 @@ public class PlayerController : MonoBehaviour
         checkPoint = transform.position;
         rb2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        currentHearts = maxHearts;
         animator = GetComponent<Animator>();
         HeartSystem.instance.SetValue(currentHearts, maxHearts);
     }
@@ -81,10 +84,13 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 position = transform.position;
-        position.x += (2f * horizontal * Time.deltaTime * speed);
-        position.y += (2f * vertical * Time.deltaTime * speed);
-        rb2d.MovePosition(position);
+        if (isAllowMoving)
+        {
+            Vector2 position = transform.position;
+            position.x += (2f * horizontal * Time.deltaTime * speed);
+            position.y += (2f * vertical * Time.deltaTime * speed);
+            rb2d.MovePosition(position);
+        }
     }
 
     //Change Health
@@ -92,11 +98,12 @@ public class PlayerController : MonoBehaviour
     {
         if (amount < 0)
         {
-            //animator.SetTrigger("Hit");
             if (isInvincible)
             {
                 return;
             }
+            animator.SetTrigger("Hurt");
+
             //playSound(hitSound);
             isInvincible = true;
             invincibleTimer = timeInvincible;
@@ -114,7 +121,9 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                animator.SetTrigger("Death");
                 Debug.Log("Death!");
+                isAllowMoving = false;
             }
         }
         UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
