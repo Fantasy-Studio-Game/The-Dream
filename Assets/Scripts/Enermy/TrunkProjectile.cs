@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class TrunkProjectile : MonoBehaviour
 {
-    Rigidbody2D _rigidbody2D;
-    Vector2 _originPosition;
-
     public float rangeBullet = 5.0f;
     
+    private Rigidbody2D _rigidbody2D;
+    private Vector2 _originPosition;
+    private Animator _animator;
+
     private int _atk = 10;
+    private float _time_destroy = 1f;
+    private bool _destroyed = false;    
 
     //public ParticleSystem hitParticleSystem;
 
@@ -18,6 +21,7 @@ public class TrunkProjectile : MonoBehaviour
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         _originPosition = _rigidbody2D.position;
 
     }
@@ -26,6 +30,17 @@ public class TrunkProjectile : MonoBehaviour
     void Update()
     {
         if (Vector3.Distance(_rigidbody2D.position, _originPosition) > rangeBullet)
+        {
+            _animator.SetTrigger("Destroy");
+            _destroyed = true;
+        }
+
+        if (_destroyed)
+        {
+            _time_destroy -= Time.deltaTime;
+        }
+
+        if (_time_destroy < 0)
         {
             Destroy(gameObject);
         }
@@ -43,7 +58,8 @@ public class TrunkProjectile : MonoBehaviour
             player.ChangeHealth(-_atk);
         }
 
-        Destroy(gameObject);
+        _animator.SetTrigger("Destroy");
+        _destroyed = true;
     }
 
     public void Launch(Vector2 direction, float force, int atk)
