@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &8525043227709159832
 Animator:
   serializedVersion: 3
@@ -118,10 +118,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0062789917, y: -0.1657247}
+  m_Offset: {x: 0.0062789917, y: 0.16572475}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.3333334, y: 0.6666667}
     newSize: {x: 0.64, y: 0.32}
     adaptiveTilingThreshold: 0.5
@@ -129,7 +129,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.43190002, y: 0.33521736}
+  m_Size: {x: 0.43190002, y: 0.32517338}
   m_EdgeRadius: 0
 --- !u!50 &3841062753993817349
 Rigidbody2D:
@@ -164,6 +164,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 155de27d110ffc8458d352a04084897d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCanFire: 0
+  isCanFire: 1
   speed: 1
-  distance: 5
+  distanceMove: 5
+  distanceView: 5
+  timerFireCast: 2
+  isTowardLeft: 1

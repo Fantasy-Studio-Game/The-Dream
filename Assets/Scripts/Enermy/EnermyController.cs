@@ -5,23 +5,96 @@ using UnityEngine;
 public class EnermyController : MonoBehaviour
 {
     public bool isCanFire = false;
+    public bool isTowardLeft = true;
     public float speed = 1.0f;
-    public float distance = 5.0f;
+    public float distanceMove = 5.0f;
+    public float distanceView = 3.0f;
+    public float timerFireCast = 2.0f;
+    public float maxHealth = 100;
+    public int shield = 10;
+    public int atk = 10;
 
     private Rigidbody2D _rigidbody2D;
-    private int _direction = 1;
-    private float _distance;
+    private Animator _animator;
+
+    private int _direction;
+    private float _distanceMove;
+    private float _speed;
+    private float _timerFireCast;
+    private bool _isAwake = false;
+    private float _health;
 
     // Trigger function
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _distance = distance / 2;
+        _animator = GetComponent<Animator>();
+
+        _distanceMove = distanceMove / 2;
+        _health = maxHealth;
+
+        // stop to idle
+        _speed = 0;
+        _timerFireCast = 0;
+
+        if (isTowardLeft)
+        {
+            _direction = -1;
+        }
+        else
+        {
+            _direction = 1;
+        }
+        _animator.SetFloat("Horizontal", _direction);
     }
+
 
     void FixedUpdate()
     {
-        Moving();
+        // if enermy is casting fire
+        if (_timerFireCast > 0)
+        {
+            _timerFireCast -= Time.deltaTime;
+            return;
+        }
+        if (_health <= 0)
+        {
+            Destroy(gameObject);
+        }
+
+        RaycastHit2D detectedPayer = Physics2D.Raycast(_rigidbody2D.position + Vector2.up * 0.1f, new Vector2(_direction, 0), distanceView, LayerMask.GetMask("Player"));
+        if (detectedPayer.collider != null)
+        {            
+            if (_isAwake)
+            {
+                if (isCanFire)
+                {
+                    _timerFireCast = timerFireCast;
+                    _speed = 0;
+                }
+                else
+                {
+                    _speed = speed * 2;
+                }
+
+                _animator.SetBool("Attack", true); // --> Attack
+            }
+            else
+            {
+                // start enermy only once
+                _animator.SetTrigger("Awake"); // --> Move
+
+                // run run
+                _isAwake = true;
+                _speed = speed;
+            }
+        }
+        else
+        {
+            Moving();
+        }
+
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -30,25 +103,41 @@ public class EnermyController : MonoBehaviour
 
         if (player != null)
         {
-            player.ChangeHealth(-1);
+            player.ChangeHealth(-atk);
         }
     }
 
     // general function
     void Moving()
-    {
-        _distance -= Time.deltaTime * speed;
+    {        
+        _distanceMove -= Time.deltaTime * _speed;
 
-        if (_distance < 0)
+        if (_distanceMove < 0)
         {
             _direction = -_direction;
-            _distance = distance;
+            _distanceMove = distanceMove;
         }
 
         Vector2 position = _rigidbody2D.position;
-        position.x = position.x + Time.deltaTime * speed * _direction;
+        position.x = position.x + Time.deltaTime * _speed * _direction;
+
+        _animator.SetFloat("Horizontal", _direction);
 
         _rigidbody2D.MovePosition(position);
+
+        if(_isAwake && _speed != speed)
+        {
+            _speed = speed;
+        }
+    }
+
+
+    // public process event method
+    public void GetDamage(int damage)
+    {
+        _health -= damage * (100 - shield) / 100;
+
+        _animator.SetTrigger("Hit");
     }
 
 
