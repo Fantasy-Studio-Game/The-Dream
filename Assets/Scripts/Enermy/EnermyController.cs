@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnermyController : MonoBehaviour
 {
+    public GameObject projectilePrefab;
+
     public bool isCanFire = false;
     public bool isTowardLeft = true;
     public float speed = 1.0f;
@@ -23,6 +25,7 @@ public class EnermyController : MonoBehaviour
     private float _timerFireCast;
     private bool _isAwake = false;
     private float _health;
+    private bool _isShoot = false;
 
     // Trigger function
     void Start()
@@ -55,6 +58,13 @@ public class EnermyController : MonoBehaviour
         if (_timerFireCast > 0)
         {
             _timerFireCast -= Time.deltaTime;
+
+            if  (!_isShoot && (timerFireCast - _timerFireCast > 0.6))
+            {
+                Launch();
+                _isShoot = true;
+            }
+
             return;
         }
         if (_health <= 0)
@@ -71,6 +81,7 @@ public class EnermyController : MonoBehaviour
                 {
                     _timerFireCast = timerFireCast;
                     _speed = 0;
+                    _isShoot = false;
                 }
                 else
                 {
@@ -108,6 +119,22 @@ public class EnermyController : MonoBehaviour
     }
 
     // general function
+    void Launch()
+    {
+        int anglesRotate = 0;
+
+        if (_direction == -1)
+        {
+            anglesRotate = 180;
+        }
+
+        GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.23f, Quaternion.Euler(0, 0, anglesRotate));
+
+        TrunkProjectile projectile = projectileObject.GetComponent<TrunkProjectile>();
+        projectile.Launch(new Vector2(_direction, 0), 100, atk);
+
+    }
+
     void Moving()
     {        
         _distanceMove -= Time.deltaTime * _speed;
