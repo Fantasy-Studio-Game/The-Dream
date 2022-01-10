@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8525043227709159832}
   - component: {fileID: 4063025070131137177}
   - component: {fileID: 3841062753993817349}
-  - component: {fileID: 1225801805686503593}
+  - component: {fileID: 3571312797785534365}
   m_Layer: 8
   m_Name: Trunk
   m_TagString: Untagged
@@ -152,7 +152,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1225801805686503593
+--- !u!114 &3571312797785534365
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,15 +161,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 542458549498615659}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 155de27d110ffc8458d352a04084897d, type: 3}
+  m_Script: {fileID: 11500000, guid: 35340f5db6761644aa202cd9e994cabe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 4203161915360233477, guid: b8ee605167165a944b680e1f49e0b202, type: 3}
-  isCanFire: 1
+  isCanFire: 0
   isTowardLeft: 1
   speed: 1
   distanceMove: 5
-  distanceView: 5
+  distanceView: 3
   timerFireCast: 2
   maxHealth: 100
   shield: 10
