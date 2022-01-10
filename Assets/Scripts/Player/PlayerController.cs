@@ -32,9 +32,15 @@ public class PlayerController : MonoBehaviour
     Vector2 lookDirection = new Vector2(0, 0);
     //Animation
     private Animator animator;
+
+    // checkpoint
+    private Vector2 checkPoint;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        checkPoint = transform.position;
         rb2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
@@ -101,7 +107,15 @@ public class PlayerController : MonoBehaviour
         {
             currentHearts--;
             HeartSystem.instance.SetValue(currentHearts, maxHearts);
-            currentHealth = maxHealth;
+            if (currentHearts > 0)
+            {
+                transform.position = checkPoint;
+                currentHealth = maxHealth;
+            }
+            else
+            {
+                Debug.Log("Death!");
+            }
         }
         UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
 
