@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour
             {
                 animator.SetTrigger("Death");
                 Debug.Log("Death!");
-                isAllowMoving = false;
+                rb2d.simulated = false;
             }
         }
         UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
@@ -134,6 +134,10 @@ public class PlayerController : MonoBehaviour
     private void CastSpell()
     {
         animator.SetTrigger("Cast Spell");
+    }
+
+    public void SetCheckpoint(Vector2 position){
+        checkPoint = position;
     }
 
 }

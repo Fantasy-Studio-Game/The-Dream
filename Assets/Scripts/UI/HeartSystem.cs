@@ -23,12 +23,12 @@ public class HeartSystem : MonoBehaviour
             if (i + 1 <= hearts)
             {
                 GameObject heart = Instantiate(heartPrefab, transform.position, Quaternion.identity);
-                heart.transform.parent = transform;
+                heart.transform.SetParent(transform);
             }
             else
             {
                 GameObject heart = Instantiate(emptyHeartPrefab, transform.position, Quaternion.identity);
-                heart.transform.parent = transform;
+                heart.transform.SetParent(transform);
             }
         }
     }
