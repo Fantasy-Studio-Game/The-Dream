@@ -109,10 +109,8 @@ public class EnermyController : MonoBehaviour
             }
 
         }
-        else
-        {
-            Moving();
-        }
+
+        Moving();
 
     }
 
@@ -145,25 +143,30 @@ public class EnermyController : MonoBehaviour
 
     void Moving()
     {        
-        _distanceMove -= Time.deltaTime * _speed;
-
-        if (_distanceMove < 0)
+        if (_isAwake)
         {
-            _direction = -_direction;
-            _distanceMove = distanceMove;
+            _distanceMove -= Time.deltaTime * _speed;
+
+            if (_distanceMove < 0)
+            {
+                _direction = -_direction;
+                _distanceMove = distanceMove;
+            }
+
+            Vector2 position = _rigidbody2D.position;
+            position.x = position.x + Time.deltaTime * _speed * _direction;
+
+            _animator.SetFloat("Horizontal", _direction);
+
+            _rigidbody2D.MovePosition(position);
+
+            if (_speed == 0)
+            {
+                _speed = speed;
+            }
+
         }
 
-        Vector2 position = _rigidbody2D.position;
-        position.x = position.x + Time.deltaTime * _speed * _direction;
-
-        _animator.SetFloat("Horizontal", _direction);
-
-        _rigidbody2D.MovePosition(position);
-
-        if(_isAwake && _speed == 0)
-        {
-            _speed = speed;
-        }
     }
 
 

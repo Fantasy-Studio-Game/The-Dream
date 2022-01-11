@@ -161,16 +161,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 5066722797594138634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35340f5db6761644aa202cd9e994cabe, type: 3}
+  m_Script: {fileID: 11500000, guid: f8d820e3785da8e46a332ac50d82c7c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 0}
-  isCanFire: 0
   isTowardLeft: 1
   speed: 1
-  distanceMove: 5
+  distanceMove: 10
   distanceView: 3
-  timerFireCast: 2
+  timerAttackCast: 2
   maxHealth: 100
-  shield: 10
+  shield: 60
   atk: 10
