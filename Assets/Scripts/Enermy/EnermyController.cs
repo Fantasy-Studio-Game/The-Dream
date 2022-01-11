@@ -21,10 +21,10 @@ public class EnermyController : MonoBehaviour
     //---------------------------------------------
 
     protected IAttack attackMethod;
+    protected Animator _animator;
 
     //---------------------------------------------
     private Rigidbody2D _rigidbody2D;
-    private Animator _animator;
 
     private int _direction;
     private float _distanceMove;
@@ -125,7 +125,7 @@ public class EnermyController : MonoBehaviour
     }
 
     // general function
-    void Launch()
+    protected virtual void Launch()
     {
         int anglesRotate = 0;
 
@@ -164,7 +164,7 @@ public class EnermyController : MonoBehaviour
             {
                 _speed = speed;
             }
-
+            
         }
 
     }
