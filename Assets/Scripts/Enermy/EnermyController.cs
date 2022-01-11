@@ -1,7 +1,10 @@
+using Assets.Scripts.Enermy.Action;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Note: this class is a element in Strategy Pattern,
+// so, to use it, We must use other class inherit this class 
 public class EnermyController : MonoBehaviour
 {
     public GameObject projectilePrefab;
@@ -16,6 +19,11 @@ public class EnermyController : MonoBehaviour
     public int shield = 10;
     public int atk = 10;
 
+    //---------------------------------------------
+
+    protected IAttack attackMethod;
+
+    //---------------------------------------------
     private Rigidbody2D _rigidbody2D;
     private Animator _animator;
 
@@ -26,6 +34,8 @@ public class EnermyController : MonoBehaviour
     private bool _isAwake = false;
     private float _health;
     private bool _isShoot = false;
+
+
 
     // Trigger function
     void Start()
@@ -77,18 +87,7 @@ public class EnermyController : MonoBehaviour
         {            
             if (_isAwake)
             {
-                if (isCanFire)
-                {
-                    _timerFireCast = timerFireCast;
-                    _speed = 0;
-                    _isShoot = false;
-                }
-                else
-                {
-                    _speed = speed * 2;
-                }
-
-                _animator.SetBool("Attack", true); // --> Attack
+                attackMethod.Attack(ref _timerFireCast, ref _speed, ref _isShoot, ref _animator);
             }
             else
             {
@@ -152,11 +151,32 @@ public class EnermyController : MonoBehaviour
 
         _rigidbody2D.MovePosition(position);
 
-        if(_isAwake && _speed != speed)
+        if(_isAwake && _speed == 0)
         {
             _speed = speed;
         }
     }
+
+
+    protected void Attack()
+    {
+        attackMethod.Attack(ref _timerFireCast, ref _speed, ref _isShoot, ref _animator);
+    }
+
+    /*
+     * if (isCanFire)
+        {
+            _timerFireCast = timerFireCast;
+            _speed = 0;
+            _isShoot = false;
+        }
+        else
+        {
+            _speed = speed * 2;
+        }
+
+        _animator.SetBool("Attack", true); // --> Attack
+     */
 
 
     // public process event method
@@ -166,6 +186,5 @@ public class EnermyController : MonoBehaviour
 
         _animator.SetTrigger("Hit");
     }
-
 
 }
