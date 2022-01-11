@@ -1,4 +1,4 @@
-using Assets.Scripts.Enermy.Action;
+using Assets.Scripts.Enermy.Behavior;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,12 +9,11 @@ public class EnermyController : MonoBehaviour
 {
     public GameObject projectilePrefab;
 
-    public bool isCanFire = false;
     public bool isTowardLeft = true;
     public float speed = 1.0f;
     public float distanceMove = 5.0f;
     public float distanceView = 3.0f;
-    public float timerFireCast = 2.0f;
+    public float timerAttackCast = 2.0f;
     public float maxHealth = 100;
     public int shield = 10;
     public int atk = 10;
@@ -30,10 +29,10 @@ public class EnermyController : MonoBehaviour
     private int _direction;
     private float _distanceMove;
     private float _speed;
-    private float _timerFireCast;
+    private float _timerAttackCast;
     private bool _isAwake = false;
     private float _health;
-    private bool _isShoot = false;
+    //private bool _isShoot = false;
 
 
 
@@ -48,7 +47,7 @@ public class EnermyController : MonoBehaviour
 
         // stop to idle
         _speed = 0;
-        _timerFireCast = 0;
+        _timerAttackCast = 0;
 
         if (isTowardLeft)
         {
@@ -65,11 +64,13 @@ public class EnermyController : MonoBehaviour
     void FixedUpdate()
     {
         // if enermy is casting fire
-        if (_timerFireCast > 0)
+        /*
+         * 
+        if (_timerAttackCast > 0)
         {
-            _timerFireCast -= Time.deltaTime;
+            _timerAttackCast -= Time.deltaTime;
 
-            if  (!_isShoot && (timerFireCast - _timerFireCast > 0.6))
+            if  (!_isShoot && (timerAttackCast - _timerAttackCast > 0.6))
             {
                 Launch();
                 _isShoot = true;
@@ -77,6 +78,13 @@ public class EnermyController : MonoBehaviour
 
             return;
         }
+        */
+
+        if (attackMethod.IsAttacking(ref _timerAttackCast, ref _speed, Launch))
+        {
+            return;
+        }
+
         if (_health <= 0)
         {
             Destroy(gameObject);
@@ -84,10 +92,11 @@ public class EnermyController : MonoBehaviour
 
         RaycastHit2D detectedPayer = Physics2D.Raycast(_rigidbody2D.position + Vector2.up * 0.1f, new Vector2(_direction, 0), distanceView, LayerMask.GetMask("Player"));
         if (detectedPayer.collider != null)
-        {            
+        {
             if (_isAwake)
             {
-                attackMethod.Attack(ref _timerFireCast, ref _speed, ref _isShoot, ref _animator);
+                //attackMethod.Attack(ref _timerAttackCast, ref _speed, ref _isShoot, ref _animator);
+                Attack();
             }
             else
             {
@@ -98,13 +107,13 @@ public class EnermyController : MonoBehaviour
                 _isAwake = true;
                 _speed = speed;
             }
+
         }
         else
         {
             Moving();
         }
 
-        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -160,23 +169,9 @@ public class EnermyController : MonoBehaviour
 
     protected void Attack()
     {
-        attackMethod.Attack(ref _timerFireCast, ref _speed, ref _isShoot, ref _animator);
+        attackMethod.Attack(ref _timerAttackCast, ref _speed, ref _animator);
     }
 
-    /*
-     * if (isCanFire)
-        {
-            _timerFireCast = timerFireCast;
-            _speed = 0;
-            _isShoot = false;
-        }
-        else
-        {
-            _speed = speed * 2;
-        }
-
-        _animator.SetBool("Attack", true); // --> Attack
-     */
 
 
     // public process event method
