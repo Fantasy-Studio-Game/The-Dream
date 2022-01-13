@@ -1,5 +1,6 @@
 
 using Assets.Scripts.Enermy.Behavior;
+using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 using UnityEngine;
 
 public class ExplRock : EnermyController
@@ -11,6 +12,8 @@ public class ExplRock : EnermyController
     {
         attackMethod = new ExplosionAttack(speed/2, timerAttackCast);
         boxCollider2D = GetComponent<BoxCollider2D>();
+
+        actionBehavior = new NormalActionBehavior(distanceView, speed);
     }    
 
     // general function

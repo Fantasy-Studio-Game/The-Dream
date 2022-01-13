@@ -1,6 +1,7 @@
 
 
 using Assets.Scripts.Enermy.Behavior;
+using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 
 public class NorRock : EnermyController
 {
@@ -8,5 +9,11 @@ public class NorRock : EnermyController
     {
         attackMethod = new GoreAttack();
         (attackMethod as GoreAttack).MaxSpeed = speed / 2;
+
+        actionBehavior = new NormalActionBehavior(distanceView, speed);
+    }
+    protected override void Launch()
+    {
+        // do nothing
     }
 }
