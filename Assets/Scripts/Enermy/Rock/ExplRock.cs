@@ -40,4 +40,9 @@ public class ExplRock : EnermyController
             }
         }
     }
+
+    protected override void Moving(bool canMove)
+    {
+        base.Moving(canMove);
+    }
 }
