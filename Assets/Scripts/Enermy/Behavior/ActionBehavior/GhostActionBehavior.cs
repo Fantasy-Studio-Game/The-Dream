@@ -28,7 +28,6 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
                 {
                     appearTimer = state.act(ref animator, maxDelayTransition, castSpell, attack, moving);
                     state = state.getNext();
-                    Debug.Log(appearTimer);
                 }
                 else
                 {

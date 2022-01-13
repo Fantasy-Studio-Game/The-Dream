@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 using Assets.Scripts.Enermy.Behavior.Attack;
-using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Enermy
@@ -11,11 +10,13 @@ namespace Assets.Scripts.Enermy
         public float appearTimer = 3.20f;
         public float delayTransition = 1f;
         public float castSpell = 5f;
+        public float distanceAppearFromPlayer = 5f;
 
         public GameObject projectilePrefab;
 
         private CapsuleCollider2D capsuleCollider2D;
         private Vector2 originCollierSize;
+        private Rigidbody2D playerRigid;
 
         private void Awake()
         {
@@ -49,9 +50,10 @@ namespace Assets.Scripts.Enermy
 
         protected override void Moving(bool canMove)
         {
-            Debug.Log("New position");
+            float posX = Random.Range(-distanceAppearFromPlayer, distanceAppearFromPlayer);
+            float posY = Mathf.Sqrt(Mathf.Pow(distanceAppearFromPlayer, 2) - Mathf.Pow(posX, 2)) * (Random.Range(0, 1) * 2 - 1);
 
-            //base.Moving(canMove);
+            _rigidbody2D.MovePosition(new Vector2(posX, posY) + playerRigid.position);
         }
 
         protected override void OnCollisionEnter2D(Collision2D collision)
@@ -68,6 +70,8 @@ namespace Assets.Scripts.Enermy
                 {
                     _animator.SetTrigger("Awake");
                     GetComponent<SpriteRenderer>().enabled = true;
+
+                    playerRigid = controller.GetComponent<Rigidbody2D>();
                     //capsuleCollider2D.size = originCollierSize; // change after appear effect
                 }
             }
