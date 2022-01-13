@@ -147,6 +147,9 @@ MonoBehaviour:
   shield: 10
   atk: 10
   rateActiveRange: 3
+  appearTimer: 5.5
+  delayTransition: 1
+  castSpell: 5
   projectilePrefab: {fileID: 0}
 --- !u!70 &-2342123612355729672
 CapsuleCollider2D:
