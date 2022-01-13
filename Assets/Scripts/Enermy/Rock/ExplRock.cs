@@ -13,7 +13,7 @@ public class ExplRock : EnermyController
         attackMethod = new ExplosionAttack(speed/2, timerAttackCast);
         boxCollider2D = GetComponent<BoxCollider2D>();
 
-        actionBehavior = new NormalActionBehavior(distanceView, speed);
+        actionBehavior = new FollowActionBahavior(distanceView, speed);
     }    
 
     // general function
@@ -43,6 +43,39 @@ public class ExplRock : EnermyController
 
     protected override void Moving(bool canMove)
     {
-        base.Moving(canMove);
+        if (canMove)
+        {
+            _distanceMove -= Time.deltaTime * _speed;
+
+            if (_distanceMove < 0)
+            {
+                _direction = -_direction;
+                _distanceMove = distanceMove;
+            }
+
+            Vector2 position = _rigidbody2D.position;
+            position.x = position.x + Time.deltaTime * _speed * _direction;
+
+            _animator.SetFloat("Horizontal", _direction);
+
+            _rigidbody2D.MovePosition(position);
+
+            if (_speed == 0)
+            {
+                _speed = speed;
+            }
+
+        }
+    }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        // follow player and............
+        // :)) explode bummmmmmmm
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        OnCollisionEnter2D(collision);
     }
 }

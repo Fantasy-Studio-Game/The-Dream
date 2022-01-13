@@ -27,11 +27,11 @@ public class EnermyController : MonoBehaviour
     protected Rigidbody2D _rigidbody2D;
 
     protected int _direction;
+    protected float _distanceMove;
+    protected float _speed;
 
     //---------------------------------------------
 
-    private float _distanceMove;
-    private float _speed;
     private float _timerAttackCast;
     private float _health;
 
