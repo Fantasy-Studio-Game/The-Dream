@@ -21,7 +21,8 @@ namespace Assets.Scripts.Enermy
         private Rigidbody2D playerRigid;
 
 
-        private float _maxAngleCastBullet = 270f;
+
+        //private float _maxAngleCastBullet = 270f;
         private float _aAngleCastBullet = 15f;
 
         private void Awake()
@@ -40,32 +41,26 @@ namespace Assets.Scripts.Enermy
 
         protected override void Launch()
         {
-            //float numberBullet = _maxAngleCastBullet / _aAngleCastBullet;
-            //for (float angle = 0f; angle < numberBullet; angle += _aAngleCastBullet)
-            //{
+            for (float angle = 0f; angle < 360; angle += _aAngleCastBullet)
+            {
 
-            //    //targetCollierVector.Normalize();
+                //targetCollierVector.Normalize();
 
-            //    //float anglesRotate = Vector2.SignedAngle(new Vector2(0, 0), targetCollierVector);
+                //float anglesRotate = Vector2.SignedAngle(new Vector2(0, 0), targetCollierVector);
 
 
-            //    GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.23f, Quaternion.Euler(0, 0, angle));
+                GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.2f, Quaternion.Euler(0, 0, angle));
 
-            //    BossGhostProjectile projectile = projectileObject.GetComponent<BossGhostProjectile>();
-            //    projectile.Launch(angle.DegreeToVector2(), 100, atk);
+                BossGhostProjectile projectile = projectileObject.GetComponent<BossGhostProjectile>();
+                projectile.Launch(angle.DegreeToVector2(), 150, atk);
 
-            //}
-
-            GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.23f, Quaternion.Euler(0, 0, _aAngleCastBullet * 3));
-
-            BossGhostProjectile projectile = projectileObject.GetComponent<BossGhostProjectile>();
-            projectile.Launch((_aAngleCastBullet * 3).DegreeToVector2(), 100, atk);
+            }
         }
 
         protected override void Moving(bool canMove)
         {
             float posX = Random.Range(-distanceAppearFromPlayer, distanceAppearFromPlayer);
-            float posY = Mathf.Sqrt(Mathf.Pow(distanceAppearFromPlayer, 2) - Mathf.Pow(posX, 2)) * (Random.Range(0, 1) * 2 - 1);
+            float posY = Mathf.Sqrt(Mathf.Pow(distanceAppearFromPlayer, 2) - Mathf.Pow(posX, 2)) * (Random.Range(0, 2) * 2 - 1);
 
             targetCollierVector = new Vector2(posX, posY);
 

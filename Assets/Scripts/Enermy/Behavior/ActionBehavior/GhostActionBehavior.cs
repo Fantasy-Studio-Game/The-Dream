@@ -44,7 +44,6 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
                     appearTimer -= Time.deltaTime;
                 }
             }
-            Debug.Log(appearTimer);
         }
 
         public bool IsAwake()

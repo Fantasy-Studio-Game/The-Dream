@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8118658735514083396}
   - component: {fileID: 6236373749980682253}
   - component: {fileID: -2342123612355729672}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Ghost_Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,8 @@ MonoBehaviour:
   delayTransition: 1
   castSpell: 5
   distanceAppearFromPlayer: 3
-  projectilePrefab: {fileID: 0}
+  minRangeCastBullet: 1
+  projectilePrefab: {fileID: 7178478153185532040, guid: c521614b4328cf848a5fe9b2b9e81e69, type: 3}
 --- !u!70 &-2342123612355729672
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

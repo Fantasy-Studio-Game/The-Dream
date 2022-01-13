@@ -12,7 +12,7 @@ namespace Assets.Scripts.Enermy
         private Animator _animator;
 
         private int _atk = 10;
-        private float _time_destroy = 0.5f;
+        private float _time_destroy = 0.2f;
         private bool _destroyed = false;
 
         //public ParticleSystem hitParticleSystem;
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Enermy
         {
             if (Vector3.Distance(_rigidbody2D.position, _originPosition) > rangeBullet)
             {
-                //_animator.SetTrigger("bum");
+                _animator.SetTrigger("bum");
                 _destroyed = true;
             }
 
@@ -57,7 +57,7 @@ namespace Assets.Scripts.Enermy
                 player.ChangeHealth(-_atk);
             }
 
-            //_animator.SetTrigger("bum");
+            _animator.SetTrigger("bum");
             _destroyed = true;
         }
 
