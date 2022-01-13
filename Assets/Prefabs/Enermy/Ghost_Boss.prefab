@@ -150,7 +150,7 @@ MonoBehaviour:
   appearTimer: 5.5
   delayTransition: 1
   castSpell: 5
-  distanceAppearFromPlayer: 5
+  distanceAppearFromPlayer: 3
   projectilePrefab: {fileID: 0}
 --- !u!70 &-2342123612355729672
 CapsuleCollider2D:

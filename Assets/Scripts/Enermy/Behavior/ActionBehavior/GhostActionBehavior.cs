@@ -10,6 +10,8 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
         private float castSpell;
         private bool isAwake = false;
 
+        private bool isActive = false;
+
         private IGhostState state;
 
         public GhostActionBehavior(float delayTransition, float appearTimer, float castSpell)
@@ -22,27 +24,37 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
         }
         public void BehaveInContext(int direction, ref float speed, ref Rigidbody2D rigidbody2D, ref Animator animator, Action attack, Action<bool> moving)
         {
-            if (appearTimer <= 0)
+            if (isActive)
             {
-                if (isAwake)
+                // do 1 time per state
+                if (appearTimer <= 0)
                 {
-                    appearTimer = state.act(ref animator, maxDelayTransition, castSpell, attack, moving);
-                    state = state.getNext();
+                    if (isAwake)
+                    {
+                        appearTimer = state.act(ref animator, maxDelayTransition, castSpell, attack, moving);
+                        state = state.getNext();
+                    }
+                    else
+                    {
+                        isAwake = true;
+                    }
                 }
                 else
                 {
-                    isAwake = true;
+                    appearTimer -= Time.deltaTime;
                 }
             }
-            else
-            {
-                appearTimer -= Time.deltaTime;
-            }            
+            Debug.Log(appearTimer);
         }
 
         public bool IsAwake()
         {
             return isAwake;
+        }
+
+        public void Active()
+        {
+            isActive = true;
         }
     }
 
