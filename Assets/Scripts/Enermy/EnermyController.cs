@@ -1,4 +1,5 @@
 using Assets.Scripts.Enermy.Behavior;
+using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,6 @@ using UnityEngine;
 // so, to use it, We must use other class inherit this class 
 public class EnermyController : MonoBehaviour
 {
-    public GameObject projectilePrefab;
 
     public bool isTowardLeft = true;
     public float speed = 1.0f;
@@ -21,18 +21,19 @@ public class EnermyController : MonoBehaviour
     //---------------------------------------------
 
     protected IAttack attackMethod;
+    protected IActionBehavior actionBehavior;
+
     protected Animator _animator;
+    protected Rigidbody2D _rigidbody2D;
+
+    protected int _direction;
 
     //---------------------------------------------
-    private Rigidbody2D _rigidbody2D;
 
-    private int _direction;
     private float _distanceMove;
     private float _speed;
     private float _timerAttackCast;
-    private bool _isAwake = false;
     private float _health;
-    //private bool _isShoot = false;
 
 
 
@@ -63,22 +64,6 @@ public class EnermyController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // if enermy is casting fire
-        /*
-         * 
-        if (_timerAttackCast > 0)
-        {
-            _timerAttackCast -= Time.deltaTime;
-
-            if  (!_isShoot && (timerAttackCast - _timerAttackCast > 0.6))
-            {
-                Launch();
-                _isShoot = true;
-            }
-
-            return;
-        }
-        */
 
         if (attackMethod.IsAttacking(ref _timerAttackCast, ref _speed, Launch))
         {
@@ -90,27 +75,7 @@ public class EnermyController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        RaycastHit2D detectedPayer = Physics2D.Raycast(_rigidbody2D.position + Vector2.up * 0.1f, new Vector2(_direction, 0), distanceView, LayerMask.GetMask("Player"));
-        if (detectedPayer.collider != null)
-        {
-            if (_isAwake)
-            {
-                //attackMethod.Attack(ref _timerAttackCast, ref _speed, ref _isShoot, ref _animator);
-                Attack();
-            }
-            else
-            {
-                // start enermy only once
-                _animator.SetTrigger("Awake"); // --> Move
-
-                // run run
-                _isAwake = true;
-                _speed = speed;
-            }
-
-        }
-
-        Moving();
+        actionBehavior.BehaveInContext(_direction, ref _speed, _rigidbody2D, ref _animator, Attack, Moving);
 
     }
 
@@ -127,23 +92,12 @@ public class EnermyController : MonoBehaviour
     // general function
     protected virtual void Launch()
     {
-        int anglesRotate = 0;
-
-        if (_direction == -1)
-        {
-            anglesRotate = 180;
-        }
-
-        GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.23f, Quaternion.Euler(0, 0, anglesRotate));
-
-        TrunkProjectile projectile = projectileObject.GetComponent<TrunkProjectile>();
-        projectile.Launch(new Vector2(_direction, 0), 100, atk);
-
+        // subclass does
     }
 
-    void Moving()
+    void Moving(bool canMove)
     {        
-        if (_isAwake)
+        if (canMove)
         {
             _distanceMove -= Time.deltaTime * _speed;
 
