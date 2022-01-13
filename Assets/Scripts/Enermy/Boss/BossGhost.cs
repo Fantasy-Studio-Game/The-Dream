@@ -1,18 +1,31 @@
 ﻿using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 using Assets.Scripts.Enermy.Behavior.Attack;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Enermy
 {
     public class BossGhost : EnermyController
     {
+        public float rateActiveRange = 3f;
+        public float appearTimer = 3.20f;
+
         public GameObject projectilePrefab;
+
+        private CapsuleCollider2D capsuleCollider2D;
+        private Vector2 originCollierSize;
 
         private void Awake()
         {
+            capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+            originCollierSize = capsuleCollider2D.size;
+            capsuleCollider2D.size = originCollierSize * rateActiveRange;
+
+            GetComponent<SpriteRenderer>().enabled = false;
+
             attackMethod = new BuzzAroundShootAttack();
 
-            actionBehavior = new GhostActionBehavior(distanceView, speed);
+            actionBehavior = new GhostActionBehavior(distanceView, appearTimer);
         }
 
         protected override void Launch()
@@ -29,5 +42,35 @@ namespace Assets.Scripts.Enermy
             //TrunkProjectile projectile = projectileObject.GetComponent<TrunkProjectile>();
             //projectile.Launch(new Vector2(_direction, 0), 100, atk);
         }
+
+        protected override void Moving(bool canMove)
+        {
+            //base.Moving(canMove);
+        }
+
+        protected override void OnCollisionEnter2D(Collision2D collision)
+        {
+            PlayerController controller = collision.gameObject.GetComponent<PlayerController>();
+
+            if (controller != null)
+            {
+                if (actionBehavior.IsAwake())
+                {
+                    base.OnCollisionEnter2D (collision);
+                }
+                else
+                {
+                    _animator.SetTrigger("Awake");
+                    GetComponent<SpriteRenderer>().enabled = true;
+                    //capsuleCollider2D.size = originCollierSize; // change after appear effect
+                }
+            }
+        }
+
+        private void OnCollisionStay2D(Collision2D collision)
+        {
+            OnCollisionEnter2D(collision);
+        }
+
     }
 }

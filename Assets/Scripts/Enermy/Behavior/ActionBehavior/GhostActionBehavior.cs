@@ -6,37 +6,50 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
     public class GhostActionBehavior : IActionBehavior
     {
         private float distanceView;
-        private float speed;
+        private float appearTimer;
         private bool isAwake = false;
 
-        public GhostActionBehavior(float distanceView, float speed)
+        public GhostActionBehavior(float distanceView, float appearTimer)
         {
             this.distanceView = distanceView;
-            this.speed = speed;
+            this.appearTimer = appearTimer;
         }
         public void BehaveInContext(int direction, ref float speed, Rigidbody2D rigidbody2D, ref Animator animator, Action attack, Action<bool> moving)
         {
-            RaycastHit2D detectedPayer = Physics2D.Raycast(rigidbody2D.position + Vector2.up * 0.1f, new Vector2(direction, 0), distanceView, LayerMask.GetMask("Player"));
-            if (detectedPayer.collider != null)
+            if (appearTimer <= 0)
             {
-                if (isAwake)
-                {
-                    //attackMethod.Attack(ref _timerAttackCast, ref _speed, ref _isShoot, ref _animator);
-                    attack();
-                }
-                else
-                {
-                    // start enermy only once
-                    animator.SetTrigger("Awake"); // --> Move
+                isAwake = true;
 
-                    // run run
-                    isAwake = true;
-                    speed = this.speed;
-                }
+                //RaycastHit2D detectedPayer = Physics2D.Raycast(rigidbody2D.position + Vector2.up * 0.1f, new Vector2(direction, 0), distanceView, LayerMask.GetMask("Player"));
+                //if (detectedPayer.collider != null)
+                //{
+                //    if (isAwake)
+                //    {
+                //        attack();
+                //    }
+                //    else
+                //    {
+                //        // start enermy only once
+                //         // --> Move
 
+                //        // run run
+                //        isAwake = true;
+                //        speed = this.speed;
+                //    }
+
+                //}
+
+                //moving(isAwake);
             }
+            else
+            {
+                appearTimer -= Time.deltaTime;
+            }
+        }
 
-            moving(isAwake);
+        public bool IsAwake()
+        {
+            return isAwake;
         }
     }
 }

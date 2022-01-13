@@ -38,5 +38,10 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 
             moving(isAwake);
         }
+
+        public bool IsAwake()
+        {
+            return isAwake;
+        }
     }
 }

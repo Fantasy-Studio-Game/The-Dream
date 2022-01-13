@@ -79,7 +79,7 @@ public class EnermyController : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
 
@@ -95,7 +95,7 @@ public class EnermyController : MonoBehaviour
         // subclass does
     }
 
-    void Moving(bool canMove)
+    protected virtual void Moving(bool canMove)
     {        
         if (canMove)
         {
