@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 using Assets.Scripts.Enermy.Behavior.Attack;
-using System.Collections;
+using Assets.Scripts.Helper;
 using UnityEngine;
 
 namespace Assets.Scripts.Enermy
@@ -11,11 +11,19 @@ namespace Assets.Scripts.Enermy
         public float appearTimer = 3.20f;
         public float delayTransition = 1f;
         public float castSpell = 5f;
+        public float distanceAppearFromPlayer = 5f;
 
         public GameObject projectilePrefab;
 
         private CapsuleCollider2D capsuleCollider2D;
         private Vector2 originCollierSize;
+        private Vector2 targetCollierVector;
+        private Rigidbody2D playerRigid;
+
+
+
+        //private float _maxAngleCastBullet = 270f;
+        private float _aAngleCastBullet = 15f;
 
         private void Awake()
         {
@@ -28,30 +36,44 @@ namespace Assets.Scripts.Enermy
             attackMethod = new BuzzAroundShootAttack();
 
             actionBehavior = new GhostActionBehavior(delayTransition, appearTimer, castSpell);
+
         }
 
         protected override void Launch()
         {
-            Debug.Log("Launch");
+            for (float angle = 0f; angle < 360; angle += _aAngleCastBullet)
+            {
 
-            //int anglesRotate = 0;
+                //targetCollierVector.Normalize();
 
-            //if (_direction == -1)
-            //{
-            //    anglesRotate = 180;
-            //}
+                //float anglesRotate = Vector2.SignedAngle(new Vector2(0, 0), targetCollierVector);
 
-            //GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.23f, Quaternion.Euler(0, 0, anglesRotate));
 
-            //TrunkProjectile projectile = projectileObject.GetComponent<TrunkProjectile>();
-            //projectile.Launch(new Vector2(_direction, 0), 100, atk);
+                GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.2f, Quaternion.Euler(0, 0, angle));
+
+                BossGhostProjectile projectile = projectileObject.GetComponent<BossGhostProjectile>();
+                projectile.Launch(angle.DegreeToVector2(), 150, atk);
+
+            }
         }
 
         protected override void Moving(bool canMove)
         {
-            Debug.Log("New position");
+            float posX = Random.Range(-distanceAppearFromPlayer, distanceAppearFromPlayer);
+            float posY = Mathf.Sqrt(Mathf.Pow(distanceAppearFromPlayer, 2) - Mathf.Pow(posX, 2)) * (Random.Range(0, 2) * 2 - 1);
 
-            //base.Moving(canMove);
+            targetCollierVector = new Vector2(posX, posY);
+
+            _rigidbody2D.MovePosition(targetCollierVector + playerRigid.position);
+
+            if (targetCollierVector.x < 0)
+            {
+                _animator.SetFloat("Horizontal", 1);
+            }
+            else
+            {
+                _animator.SetFloat("Horizontal", -1);
+            }
         }
 
         protected override void OnCollisionEnter2D(Collision2D collision)
@@ -68,7 +90,10 @@ namespace Assets.Scripts.Enermy
                 {
                     _animator.SetTrigger("Awake");
                     GetComponent<SpriteRenderer>().enabled = true;
-                    //capsuleCollider2D.size = originCollierSize; // change after appear effect
+                    (actionBehavior as GhostActionBehavior).Active();
+
+                    playerRigid = controller.GetComponent<Rigidbody2D>();
+                    capsuleCollider2D.size = originCollierSize; // change after appear effect
                 }
             }
         }
