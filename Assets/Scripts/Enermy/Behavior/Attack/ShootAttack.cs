@@ -16,29 +16,31 @@ namespace Assets.Scripts.Enermy.Behavior
 
         public ShootAttack(float maxTimerShootCast, float speed)
         {
-            _maxTimerShootCast = maxTimerShootCast;
+            _timerShootCast = _maxTimerShootCast = maxTimerShootCast;
 
             _maxSpeed = speed;
         }
         public void Attack(ref float speed, ref Animator animator, Action launch)
         {
-            _timerShootCast = _maxTimerShootCast;
-
             _curSpeed = speed = 0;
 
-            _alreadyShoot = false;
-
             animator.SetBool("Attack", true); // --> Attack
-
+            
             if (_timerShootCast > 0)
             {
                 _timerShootCast -= Time.deltaTime;
 
-                if (!_alreadyShoot && (_timerShootCast - _timerShootCast > 0.6))
+                if ((!_alreadyShoot) && (_timerShootCast > 0.44f))
                 {
                     launch();
                     _alreadyShoot = true;
                 }
+            }
+            else
+            {
+                _timerShootCast = _maxTimerShootCast;
+
+                _alreadyShoot = false;
             }
         }
 

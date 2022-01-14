@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Trunk : EnermyController
 {
-    public float timerAttackCast = 2.0f;
+    public float timerAttackCast = 1.0f;
     public GameObject projectilePrefab;
 
     private void Awake()
@@ -23,11 +23,9 @@ public class Trunk : EnermyController
             anglesRotate = 180;
         }
 
-        Debug.Log("aaaaaaaaaa");
+        GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.23f, Quaternion.Euler(0, 0, anglesRotate));
 
-        //GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.23f, Quaternion.Euler(0, 0, anglesRotate));
-
-        //TrunkProjectile projectile = projectileObject.GetComponent<TrunkProjectile>();
-        //projectile.Launch(new Vector2(_direction, 0), 100, atk);
+        TrunkProjectile projectile = projectileObject.GetComponent<TrunkProjectile>();
+        projectile.Launch(new Vector2(_direction, 0), 100, atk);
     }
 }
