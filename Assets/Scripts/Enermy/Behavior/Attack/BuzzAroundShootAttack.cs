@@ -5,33 +5,22 @@ namespace Assets.Scripts.Enermy.Behavior.Attack
 {
     public class BuzzAroundShootAttack : IAttack
     {
-        float _timerAttackCast;
-        bool _alreadyShoot;
+        private Action fire;
 
-        public float TimerAttackCast { set { _timerAttackCast = value; } }
         public void Attack(ref float timerAttackCast, ref float speed, ref Animator animator)
         {
-            //timerAttackCast = _timerAttackCast;
-            //speed = 0;
-            //_alreadyShoot = false;
-            //animator.SetBool("Attack", true); // --> Attack
+            if (fire != null)
+            {
+                fire();
+            }
         }
 
         public bool IsAttacking(ref float timerAttackCast, ref float speed, Action launch)
         {
-            //if (timerAttackCast > 0)
-            //{
-            //    timerAttackCast -= Time.deltaTime;
-
-            //    if (!_alreadyShoot && (_timerAttackCast - timerAttackCast > 0.6))
-            //    {
-            //        launch();
-            //        _alreadyShoot = true;
-
-            //    }
-
-            //    return true;
-            //}
+            if (fire == null)
+            {
+                fire = launch;
+            }
 
             return false;
         }

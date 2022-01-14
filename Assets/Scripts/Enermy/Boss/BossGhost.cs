@@ -9,6 +9,8 @@ namespace Assets.Scripts.Enermy
     {
         public float rateActiveRange = 3f;
         public float appearTimer = 3.20f;
+        public float delayTransition = 1f;
+        public float castSpell = 5f;
 
         public GameObject projectilePrefab;
 
@@ -25,11 +27,13 @@ namespace Assets.Scripts.Enermy
 
             attackMethod = new BuzzAroundShootAttack();
 
-            actionBehavior = new GhostActionBehavior(distanceView, appearTimer);
+            actionBehavior = new GhostActionBehavior(delayTransition, appearTimer, castSpell);
         }
 
         protected override void Launch()
         {
+            Debug.Log("Launch");
+
             //int anglesRotate = 0;
 
             //if (_direction == -1)
@@ -45,6 +49,8 @@ namespace Assets.Scripts.Enermy
 
         protected override void Moving(bool canMove)
         {
+            Debug.Log("New position");
+
             //base.Moving(canMove);
         }
 

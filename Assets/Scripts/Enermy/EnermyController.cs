@@ -75,7 +75,7 @@ public class EnermyController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        actionBehavior.BehaveInContext(_direction, ref _speed, _rigidbody2D, ref _animator, Attack, Moving);
+        actionBehavior.BehaveInContext(_direction, ref _speed, ref _rigidbody2D, ref _animator, Attack, Moving);
 
     }
 

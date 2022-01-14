@@ -5,46 +5,40 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 {
     public class GhostActionBehavior : IActionBehavior
     {
-        private float distanceView;
+        private float maxDelayTransition;
         private float appearTimer;
+        private float castSpell;
         private bool isAwake = false;
 
-        public GhostActionBehavior(float distanceView, float appearTimer)
+        private IGhostState state;
+
+        public GhostActionBehavior(float delayTransition, float appearTimer, float castSpell)
         {
-            this.distanceView = distanceView;
+            maxDelayTransition = delayTransition;
             this.appearTimer = appearTimer;
+            this.castSpell = castSpell;
+
+            state = new AttackGhostState();
         }
-        public void BehaveInContext(int direction, ref float speed, Rigidbody2D rigidbody2D, ref Animator animator, Action attack, Action<bool> moving)
+        public void BehaveInContext(int direction, ref float speed, ref Rigidbody2D rigidbody2D, ref Animator animator, Action attack, Action<bool> moving)
         {
             if (appearTimer <= 0)
             {
-                isAwake = true;
-
-                //RaycastHit2D detectedPayer = Physics2D.Raycast(rigidbody2D.position + Vector2.up * 0.1f, new Vector2(direction, 0), distanceView, LayerMask.GetMask("Player"));
-                //if (detectedPayer.collider != null)
-                //{
-                //    if (isAwake)
-                //    {
-                //        attack();
-                //    }
-                //    else
-                //    {
-                //        // start enermy only once
-                //         // --> Move
-
-                //        // run run
-                //        isAwake = true;
-                //        speed = this.speed;
-                //    }
-
-                //}
-
-                //moving(isAwake);
+                if (isAwake)
+                {
+                    appearTimer = state.act(ref animator, maxDelayTransition, castSpell, attack, moving);
+                    state = state.getNext();
+                    Debug.Log(appearTimer);
+                }
+                else
+                {
+                    isAwake = true;
+                }
             }
             else
             {
                 appearTimer -= Time.deltaTime;
-            }
+            }            
         }
 
         public bool IsAwake()
@@ -52,4 +46,61 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             return isAwake;
         }
     }
+
+
+    public interface IGhostState
+    {
+        IGhostState getNext();
+        float act(ref Animator animator, float delayTransition, float castSpell, Action attack, Action<bool> moving);
+    }
+
+    public class AppearGhostState : IGhostState
+    {
+        public float act(ref Animator animator, float delayTransition, float castSpell, Action attack, Action<bool> moving)
+        {
+            animator.SetTrigger("Respawn");
+            moving(true);
+
+            return delayTransition;
+        }
+
+        public IGhostState getNext()
+        {
+            return new AttackGhostState();
+        }
+    }
+
+    public class AttackGhostState : IGhostState
+    {
+        public float act(ref Animator animator, float delayTransition, float castSpell, Action attack, Action<bool> moving)
+        {
+            animator.SetBool("Attack", true);
+            animator.ResetTrigger("Respawn");
+            attack();
+
+            return castSpell;
+        }
+
+        public IGhostState getNext()
+        {
+            return new DisappearGhostState();
+        }
+    }
+
+    public class DisappearGhostState : IGhostState
+    {
+        public float act(ref Animator animator, float delayTransition, float castSpell, Action attack, Action<bool> moving)
+        {
+            animator.SetBool("Attack", false);
+
+            return delayTransition;
+        }
+
+        public IGhostState getNext()
+        {
+            return new AppearGhostState();
+        }
+    }
 }
+
+
