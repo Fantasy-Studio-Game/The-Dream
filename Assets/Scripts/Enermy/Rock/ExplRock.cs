@@ -33,12 +33,11 @@ public class ExplRock : EnermyController
 
             Vector2 position = _rigidbody2D.position;
             position.x = position.x + Time.deltaTime * _speed * _direction;
+            //position.y = position.y + Time.deltaTime * _speed * _direction;
 
             _animator.SetFloat("Horizontal", _direction);
 
             _rigidbody2D.MovePosition(position);
-
-
         }
     }
 
