@@ -5,35 +5,44 @@ using UnityEngine;
 
 public class ExplRock : EnermyController
 {
-    public float acceleration = 0.01f;
+    public float acceleration = 0.5f;
+    public float countDownTimer = 5.0f;
 
-    private BoxCollider2D boxCollider2D;
-    private bool _isExplosion = false;
     private void Awake()
     {
-        attackMethod = new ExplosionAttack();
-        boxCollider2D = GetComponent<BoxCollider2D>();
+        BoxCollider2D boxCollider2D = GetComponent<BoxCollider2D>();
+        attackMethod = new ExplosionAttack(ref boxCollider2D, countDownTimer);
 
-        actionBehavior = new FollowActionBahavior(distanceView, speed);
+        actionBehavior = new FollowActionBahavior(distanceView, acceleration);
 
     }    
 
     // general function
     protected override void Moving(bool canMove)
     {
+        if ((attackMethod as ExplosionAttack).IsExplosion())
+        {
+            Destroy(gameObject);
+        }
+
         if (canMove)
         {
-            //explosionTimeCast -= Time.deltaTime;
-
-            //if (_distanceMove < 0)
-            //{
-            //    attackMethod.Attack(ref timerAttackCast, ref _speed, ref _animator);
-            //    return;
-            //}
+            Vector2 directionVec = (actionBehavior as FollowActionBahavior).TargetRigid2d.position - _rigidbody2D.position;
+            directionVec.Normalize();
 
             Vector2 position = _rigidbody2D.position;
-            position.x = position.x + Time.deltaTime * _speed * _direction;
-            //position.y = position.y + Time.deltaTime * _speed * _direction;
+
+            position.x = position.x + Time.deltaTime * _speed * directionVec.x;
+            position.y = position.y + Time.deltaTime * _speed * directionVec.y;
+
+            if (directionVec.x > 0)
+            {
+                _direction = 1;
+            }
+            else
+            {
+                _direction = -1;
+            }
 
             _animator.SetFloat("Horizontal", _direction);
 
@@ -49,6 +58,13 @@ public class ExplRock : EnermyController
         // start up
         if (collision.gameObject.GetComponent<PlayerController>() != null)
         {
+            if ((attackMethod as ExplosionAttack).IsExplosion())
+            {
+                collision.gameObject.GetComponent<PlayerController>().ChangeHealth(-atk);
+
+                Destroy(gameObject);
+            }
+
             (actionBehavior as FollowActionBahavior).startUpbytouch(collision.gameObject.GetComponent<Rigidbody2D>());
             _animator.SetTrigger("Awake");
         }
