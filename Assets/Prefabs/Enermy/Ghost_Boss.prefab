@@ -94,7 +94,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2778189118336116801}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -147,6 +147,10 @@ MonoBehaviour:
   shield: 10
   atk: 10
   rateActiveRange: 3
+  appearTimer: 5.5
+  delayTransition: 1
+  castSpell: 5
+  distanceAppearFromPlayer: 5
   projectilePrefab: {fileID: 0}
 --- !u!70 &-2342123612355729672
 CapsuleCollider2D:
