@@ -167,8 +167,8 @@ MonoBehaviour:
   isTowardLeft: 1
   speed: 1
   distanceMove: 10
-  distanceView: 3
-  timerAttackCast: 2
+  distanceView: 6
   maxHealth: 100
   shield: 60
   atk: 10
+  angryTimer: 5
