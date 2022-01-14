@@ -20,6 +20,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 
         public void BehaveInContext(int direction, ref float speed, ref Rigidbody2D rigidbody2D, ref Animator animator, Action attack, Action unAttack, Action<bool> moving)
         {
+            // follow a target
             if (targetRigid2d != null)
             {
                 // v = v0 + at
@@ -40,10 +41,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
                     animator.SetTrigger("Awake"); // --> run
                 }
 
-                else
-                {
-                    speed = 0;
-                }
+                
             }
         }
 
