@@ -5,43 +5,48 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 {
     internal class FollowActionBahavior: IActionBehavior
     {
+        private float acceleration;
         private float distanceView;
-        private float speed;
-        private bool isAwake = false;
 
-        public FollowActionBahavior(float distanceView, float speed)
+        private Rigidbody2D targetRigid2d;
+
+        public FollowActionBahavior(float distanceView, float acceleration)
         {
             this.distanceView = distanceView;
-            this.speed = speed;
+            this.acceleration = acceleration;
         }
         public void BehaveInContext(int direction, ref float speed, ref Rigidbody2D rigidbody2D, ref Animator animator, Action attack, Action<bool> moving)
         {
-            RaycastHit2D detectedPayer = Physics2D.Raycast(rigidbody2D.position + Vector2.up * 0.1f, new Vector2(direction, 0), distanceView, LayerMask.GetMask("Player"));
-            if (detectedPayer.collider != null)
+            if (targetRigid2d != null)
             {
-                if (isAwake)
+                // v = v0 + at
+                speed += acceleration * Time.deltaTime;
+
+                attack();
+                moving(true);
+            }
+            else
+            {
+                // find player
+                RaycastHit2D detectedPayer = Physics2D.Raycast(rigidbody2D.position + Vector2.up * 0.1f, new Vector2(direction, 0), distanceView, LayerMask.GetMask("Player"));
+                if (detectedPayer.collider != null)
                 {
-                    //attackMethod.Attack(ref _timerAttackCast, ref _speed, ref _isShoot, ref _animator);
-                    attack();
+                    targetRigid2d = detectedPayer.rigidbody;
+
+                    // start enermy only once
+                    animator.SetTrigger("Awake"); // --> run
                 }
+
                 else
                 {
-                    // start enermy only once
-                    animator.SetTrigger("Awake"); // --> Move
-
-                    // run run
-                    isAwake = true;
-                    speed = this.speed;
+                    speed = 0;
                 }
-
             }
-
-            moving(isAwake);
         }
 
         public bool IsAwake()
         {
-            return isAwake;
+            return targetRigid2d != null;
         }
     }
 }
