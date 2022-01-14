@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(rb2d.position, originPosition) > 10)
+        if (Vector3.Distance(rb2d.position, originPosition) > 4.5)
         {
             Destroy(gameObject);
         }
