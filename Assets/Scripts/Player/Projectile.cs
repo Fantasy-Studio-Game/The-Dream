@@ -5,11 +5,13 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     Rigidbody2D rb2d;
+    private Vector2 originPosition;
     int type;
     // Start is called before the first frame update
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        originPosition = rb2d.position;
     }
 
     void Start()
@@ -19,7 +21,7 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.magnitude > 20)
+        if (Vector3.Distance(rb2d.position, originPosition) > 10)
         {
             Destroy(gameObject);
         }
