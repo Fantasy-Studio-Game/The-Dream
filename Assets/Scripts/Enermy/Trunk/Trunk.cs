@@ -23,9 +23,11 @@ public class Trunk : EnermyController
             anglesRotate = 180;
         }
 
-        GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.23f, Quaternion.Euler(0, 0, anglesRotate));
+        Debug.Log("aaaaaaaaaa");
 
-        TrunkProjectile projectile = projectileObject.GetComponent<TrunkProjectile>();
-        projectile.Launch(new Vector2(_direction, 0), 100, atk);
+        //GameObject projectileObject = Instantiate(projectilePrefab, _rigidbody2D.position + Vector2.up * 0.23f, Quaternion.Euler(0, 0, anglesRotate));
+
+        //TrunkProjectile projectile = projectileObject.GetComponent<TrunkProjectile>();
+        //projectile.Launch(new Vector2(_direction, 0), 100, atk);
     }
 }
