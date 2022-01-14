@@ -15,10 +15,10 @@ public class PlayerController : MonoBehaviour
     float invincibleTimer;
 
     //health
-    public int maxHealth = 5;
+    public int maxHealth = 20;
     int currentHealth;
 
-    public int maxHearts = 3;
+    public int maxHearts = 5;
     int currentHearts;
 
     bool isAllowMoving = true;
@@ -27,6 +27,12 @@ public class PlayerController : MonoBehaviour
     {
         get { return currentHealth; }
         set { currentHealth = value; }
+    }
+
+    public int hearts
+    {
+        get { return currentHearts; }
+        set { currentHearts = value; }
     }
     public float speed = 2.5f;
 
@@ -58,7 +64,7 @@ public class PlayerController : MonoBehaviour
         checkPoint = transform.position;
         rb2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
-        currentHearts = maxHearts;
+        currentHearts = 3;
         animator = GetComponent<Animator>();
         HeartSystem.instance.SetValue(currentHearts, maxHearts);
     }
@@ -117,6 +123,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void AddHeart(int amount)
+    {
+        Debug.Log("Add heart");
+        currentHearts += amount;
+        Debug.Log(currentHearts);
+        HeartSystem.instance.SetValue(currentHearts, maxHearts);
+    }
+
     //Change Health
     public void ChangeHealth(int amount)
     {
@@ -131,7 +145,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             animator.SetTrigger("Hurt");
-            rb2d.AddForce(-lookDirection*2000);
+            rb2d.AddForce(-lookDirection * 2000);
             //playSound(hitSound);
             isInvincible = true;
             invincibleTimer = timeInvincible;
@@ -180,7 +194,7 @@ public class PlayerController : MonoBehaviour
         GameObject projectileObject = Instantiate(projectilePrefab, rb2d.position + Vector2.up * 0.5f, Quaternion.identity);
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(lookDirection, 300f);
-        
+
         yield return new WaitForSeconds(attackingCooldownTime);
         isAllowAttacking = true;
     }
