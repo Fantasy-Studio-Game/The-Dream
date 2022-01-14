@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 4898196902454873331}
   - component: {fileID: 1557145510}
   - component: {fileID: 1817714174127959419}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,6 +208,8 @@ MonoBehaviour:
   magicShield: {fileID: 1761775395}
   magicShieldActiveTime: 2
   magicShieldCooldownTime: 3
+  attackingCooldownTime: 0.5
+  projectilePrefab: {fileID: 8387197683866177092, guid: 2f159d3757fa0af48a7090cd991b3365, type: 3}
 --- !u!50 &4898196902454873331
 Rigidbody2D:
   serializedVersion: 4
@@ -228,7 +230,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 0
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1557145510
 BoxCollider2D:
   m_ObjectHideFlags: 0

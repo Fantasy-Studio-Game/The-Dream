@@ -45,6 +45,13 @@ public class PlayerController : MonoBehaviour
     public float magicShieldActiveTime = 2.0f;
     public float magicShieldCooldownTime = 3.0f;
 
+    // Attack
+    private bool isAllowAttacking = true;
+    public float attackingCooldownTime = 1f;
+
+    // Projectile
+    public GameObject projectilePrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -87,6 +94,14 @@ public class PlayerController : MonoBehaviour
             if (isAllowMagicShield == true)
             {
                 StartCoroutine(CastSpell());
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (isAllowAttacking == true)
+            {
+                StartCoroutine(Launch());
             }
         }
     }
@@ -156,6 +171,19 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(magicShieldCooldownTime);
         isAllowMagicShield = true;
+    }
+
+    IEnumerator Launch()
+    {
+        animator.SetTrigger("Launch");
+        isAllowAttacking = false;
+        GameObject projectileObject = Instantiate(projectilePrefab, rb2d.position + Vector2.up * 0.5f, Quaternion.identity);
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.Launch(lookDirection, 300f);
+
+        animator.SetTrigger("Launch");
+        yield return new WaitForSeconds(attackingCooldownTime);
+        isAllowAttacking = true;
     }
 
     public void SetCheckpoint(Vector2 position)
