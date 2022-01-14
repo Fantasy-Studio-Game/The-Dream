@@ -22,6 +22,8 @@ namespace Assets.Scripts.Enermy.Behavior
                 _collider.offset = new Vector2(0, 0.1f);
                 _collider.size = new Vector2(1f, 1f);
 
+                speed = 0;
+
                 animator.SetBool("Attack", true); // --> Attack
 
                 // make sure this block run once
@@ -43,6 +45,11 @@ namespace Assets.Scripts.Enermy.Behavior
         }
 
         public bool IsExplosion()
+        {
+            return _countdown <= 0;
+        }
+
+        public bool IsDestroy()
         {
             return _countdown <= -1f;
         }

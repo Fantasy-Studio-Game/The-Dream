@@ -27,9 +27,10 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
                 {
                     speed += acceleration * Time.deltaTime;
 
-                    attack();
                     moving(true);
                 }
+
+                attack();
             }
             else
             {

@@ -20,7 +20,7 @@ public class ExplRock : EnermyController
     // general function
     protected override void Moving(bool canMove)
     {
-        if ((attackMethod as ExplosionAttack).IsExplosion())
+        if ((attackMethod as ExplosionAttack).IsDestroy())
         {
             Destroy(gameObject);
         }
@@ -61,8 +61,6 @@ public class ExplRock : EnermyController
             if ((attackMethod as ExplosionAttack).IsExplosion())
             {
                 collision.gameObject.GetComponent<PlayerController>().ChangeHealth(-atk);
-
-                Destroy(gameObject);
             }
 
             (actionBehavior as FollowActionBahavior).startUpbytouch(collision.gameObject.GetComponent<Rigidbody2D>());
