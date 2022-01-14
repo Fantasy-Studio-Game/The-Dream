@@ -5,6 +5,7 @@ using UnityEngine;
 public class PeaksController : MonoBehaviour
 {
 
+    public int damage = 5;
     private SpriteRenderer _spriteRenderer;
 
     private void Start()
@@ -24,7 +25,7 @@ public class PeaksController : MonoBehaviour
 
         if (controller != null)
         {
-            controller.ChangeHealth(-1);
+            controller.ChangeHealth(-damage);
         }
     }
 }
