@@ -32,6 +32,11 @@ namespace Assets.Scripts.Enermy.Behavior
             //}
         }
 
+        public void UnAttack(ref float speed, ref Animator animator)
+        {
+            //
+        }
+
         public bool IsAttacking()
         {
             // This enermy always moves

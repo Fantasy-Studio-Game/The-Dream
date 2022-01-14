@@ -9,7 +9,7 @@ public class Trunk : EnermyController
 
     private void Awake()
     {
-        attackMethod = new ShootAttack(timerAttackCast);
+        attackMethod = new ShootAttack(timerAttackCast, speed);
 
         actionBehavior = new NormalActionBehavior(distanceView, speed);
     }

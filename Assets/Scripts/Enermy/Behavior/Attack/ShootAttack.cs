@@ -8,37 +8,48 @@ namespace Assets.Scripts.Enermy.Behavior
     {
         private float _maxTimerShootCast;
         private float _timerShootCast;
+
+        private float _maxSpeed;
+        private float _curSpeed;
+
         private bool _alreadyShoot;
 
-        public ShootAttack(float maxTimerShootCast)
+        public ShootAttack(float maxTimerShootCast, float speed)
         {
             _maxTimerShootCast = maxTimerShootCast;
+
+            _maxSpeed = speed;
         }
         public void Attack(ref float speed, ref Animator animator, Action launch)
         {
-            //timerAttackCast = _maxTimerShootCast;
-            //speed = 0;
-            //_alreadyShoot = false;
-            //animator.SetBool("Attack", true); // --> Attack
+            _timerShootCast = _maxTimerShootCast;
 
-            //if (_timerShootCast > 0)
-            //{
-            //    _timerShootCast -= Time.deltaTime;
+            _curSpeed = speed = 0;
 
-            //    if (!_alreadyShoot && (_timerShootCast - timerAttackCast > 0.6))
-            //    {
-            //        launch();
-            //        _alreadyShoot = true;
+            _alreadyShoot = false;
 
-            //    }
+            animator.SetBool("Attack", true); // --> Attack
 
-            //    return true;
-            //}
+            if (_timerShootCast > 0)
+            {
+                _timerShootCast -= Time.deltaTime;
+
+                if (!_alreadyShoot && (_timerShootCast - _timerShootCast > 0.6))
+                {
+                    launch();
+                    _alreadyShoot = true;
+                }
+            }
+        }
+
+        public void UnAttack(ref float speed, ref Animator animator)
+        {
+            speed = _maxSpeed;
         }
 
         public bool IsAttacking()
         {
-            return _timerShootCast < _maxTimerShootCast;
+            return _curSpeed <= 0;
         }
     }
 }

@@ -5,10 +5,10 @@ using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 
 public class NorRock : EnermyController
 {
+    public float angryTimer = 5.0f;
     private void Awake()
     {
-        attackMethod = new GoreAttack();
-        (attackMethod as GoreAttack).MaxSpeed = speed / 2;
+        attackMethod = new GoreAttack(speed, angryTimer);
 
         actionBehavior = new NormalActionBehavior(distanceView, speed);
     }

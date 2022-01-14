@@ -22,7 +22,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 
             state = new AttackGhostState();
         }
-        public void BehaveInContext(int direction, ref float speed, ref Rigidbody2D rigidbody2D, ref Animator animator, Action attack, Action<bool> moving)
+        public void BehaveInContext(int direction, ref float speed, ref Rigidbody2D rigidbody2D, ref Animator animator, Action attack, Action unAttack, Action<bool> moving)
         {
             if (isActive)
             {
