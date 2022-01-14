@@ -39,6 +39,12 @@ public class PlayerController : MonoBehaviour
     private Vector2 checkPoint;
 
 
+    // shield
+    public GameObject magicShield;
+    private bool isAllowMagicShield = true;
+    public float magicShieldActiveTime = 2.0f;
+    public float magicShieldCooldownTime = 3.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,7 +84,10 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            CastSpell();
+            if (isAllowMagicShield == true)
+            {
+                StartCoroutine(CastSpell());
+            }
         }
     }
 
@@ -98,6 +107,10 @@ public class PlayerController : MonoBehaviour
     {
         if (amount < 0)
         {
+            if (magicShield.active == true)
+            {
+                return;
+            }
             if (isInvincible)
             {
                 return;
@@ -132,12 +145,21 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void CastSpell()
+    IEnumerator CastSpell()
     {
         animator.SetTrigger("Cast Spell");
+        isAllowMagicShield = false;
+        magicShield.SetActive(true);
+
+        yield return new WaitForSeconds(magicShieldActiveTime);
+        magicShield.SetActive(false);
+
+        yield return new WaitForSeconds(magicShieldCooldownTime);
+        isAllowMagicShield = true;
     }
 
-    public void SetCheckpoint(Vector2 position){
+    public void SetCheckpoint(Vector2 position)
+    {
         checkPoint = position;
     }
 

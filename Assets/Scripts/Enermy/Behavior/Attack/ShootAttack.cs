@@ -8,37 +8,50 @@ namespace Assets.Scripts.Enermy.Behavior
     {
         private float _maxTimerShootCast;
         private float _timerShootCast;
+
+        private float _maxSpeed;
+        private float _curSpeed;
+
         private bool _alreadyShoot;
 
-        public ShootAttack(float maxTimerShootCast)
+        public ShootAttack(float maxTimerShootCast, float speed)
         {
-            _maxTimerShootCast = maxTimerShootCast;
+            _timerShootCast = _maxTimerShootCast = maxTimerShootCast;
+
+            _maxSpeed = speed;
         }
         public void Attack(ref float speed, ref Animator animator, Action launch)
         {
-            //timerAttackCast = _maxTimerShootCast;
-            //speed = 0;
-            //_alreadyShoot = false;
-            //animator.SetBool("Attack", true); // --> Attack
+            _curSpeed = speed = 0;
 
-            //if (_timerShootCast > 0)
-            //{
-            //    _timerShootCast -= Time.deltaTime;
+            animator.SetBool("Attack", true); // --> Attack
+            
+            if (_timerShootCast > 0)
+            {
+                _timerShootCast -= Time.deltaTime;
 
-            //    if (!_alreadyShoot && (_timerShootCast - timerAttackCast > 0.6))
-            //    {
-            //        launch();
-            //        _alreadyShoot = true;
+                if ((!_alreadyShoot) && (_timerShootCast > 0.44f))
+                {
+                    launch();
+                    _alreadyShoot = true;
+                }
+            }
+            else
+            {
+                _timerShootCast = _maxTimerShootCast;
 
-            //    }
+                _alreadyShoot = false;
+            }
+        }
 
-            //    return true;
-            //}
+        public void UnAttack(ref float speed, ref Animator animator)
+        {
+            speed = _maxSpeed;
         }
 
         public bool IsAttacking()
         {
-            return _timerShootCast < _maxTimerShootCast;
+            return _curSpeed <= 0;
         }
     }
 }

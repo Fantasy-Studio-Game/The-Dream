@@ -1,7 +1,5 @@
 using Assets.Scripts.Enermy.Behavior;
 using Assets.Scripts.Enermy.Behavior.ActionBehavior;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Note: this class is a element in Strategy Pattern,
@@ -58,18 +56,12 @@ public class EnermyController : MonoBehaviour
 
     void FixedUpdate()
     {
-
-        if (attackMethod.IsAttacking())
-        {
-            return;
-        }
-
         if (_health <= 0)
         {
             Destroy(gameObject);
         }
 
-        actionBehavior.BehaveInContext(_direction, ref _speed, ref _rigidbody2D, ref _animator, Attack, Moving);
+        actionBehavior.BehaveInContext(_direction, ref _speed, ref _rigidbody2D, ref _animator, Attack, UnAttack, Moving);
 
     }
 
@@ -107,20 +99,18 @@ public class EnermyController : MonoBehaviour
             _animator.SetFloat("Horizontal", _direction);
 
             _rigidbody2D.MovePosition(position);
-
-            if (_speed == 0)
-            {
-                _speed = speed;
-            }
-            
+                        
         }
-
     }
-
 
     protected void Attack()
     {
         attackMethod.Attack(ref _speed, ref _animator, Launch);
+    }
+
+    protected void UnAttack()
+    {
+        attackMethod.UnAttack(ref _speed, ref _animator);
     }
 
 

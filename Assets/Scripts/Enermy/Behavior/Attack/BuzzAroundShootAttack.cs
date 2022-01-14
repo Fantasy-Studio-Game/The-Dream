@@ -10,6 +10,11 @@ namespace Assets.Scripts.Enermy.Behavior.Attack
             launch();
         }
 
+        public void UnAttack(ref float speed, ref Animator animator)
+        {
+            return;
+        }
+
         public bool IsAttacking()
         {
             return false;
