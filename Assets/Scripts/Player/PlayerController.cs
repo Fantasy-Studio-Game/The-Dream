@@ -121,6 +121,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                this.GetComponent<Renderer>().sortingOrder = -1;
                 animator.SetTrigger("Death");
                 Debug.Log("Death!");
                 rb2d.simulated = false;
