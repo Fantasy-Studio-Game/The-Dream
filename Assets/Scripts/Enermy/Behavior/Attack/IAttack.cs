@@ -6,8 +6,18 @@ namespace Assets.Scripts.Enermy.Behavior
 {
     public interface IAttack
     {
-        void Attack(ref float timerAttackCast, ref float speed, ref Animator animator);
+        /// <summary>
+        /// Check timer to launch
+        /// </summary>
+        /// <param name="speed"></param>
+        /// <param name="animator"></param>
+        /// <param name="launch"></param>
+        void Attack(ref float speed, ref Animator animator, Action launch);
 
-        bool IsAttacking(ref float timerAttackCast, ref float speed, Action launch);
+        /// <summary>
+        /// Return if IAttack is running
+        /// </summary>
+        /// <returns></returns>
+        bool IsAttacking();
     }
 }

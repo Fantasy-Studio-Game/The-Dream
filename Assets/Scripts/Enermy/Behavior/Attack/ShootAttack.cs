@@ -6,35 +6,39 @@ namespace Assets.Scripts.Enermy.Behavior
 {
     public class ShootAttack : IAttack
     {
-        float _timerAttackCast;
-        bool _alreadyShoot;
+        private float _maxTimerShootCast;
+        private float _timerShootCast;
+        private bool _alreadyShoot;
 
-        public float TimerAttackCast { set { _timerAttackCast = value; } }
-        public void Attack(ref float timerAttackCast, ref float speed, ref Animator animator)
+        public ShootAttack(float maxTimerShootCast)
         {
-            timerAttackCast = _timerAttackCast;
-            speed = 0;
-            _alreadyShoot = false;
-            animator.SetBool("Attack", true); // --> Attack
+            _maxTimerShootCast = maxTimerShootCast;
+        }
+        public void Attack(ref float speed, ref Animator animator, Action launch)
+        {
+            //timerAttackCast = _maxTimerShootCast;
+            //speed = 0;
+            //_alreadyShoot = false;
+            //animator.SetBool("Attack", true); // --> Attack
+
+            //if (_timerShootCast > 0)
+            //{
+            //    _timerShootCast -= Time.deltaTime;
+
+            //    if (!_alreadyShoot && (_timerShootCast - timerAttackCast > 0.6))
+            //    {
+            //        launch();
+            //        _alreadyShoot = true;
+
+            //    }
+
+            //    return true;
+            //}
         }
 
-        public bool IsAttacking(ref float timerAttackCast, ref float speed, Action launch)
+        public bool IsAttacking()
         {
-            if (timerAttackCast > 0)
-            {
-                timerAttackCast -= Time.deltaTime;
-
-                if (!_alreadyShoot && (_timerAttackCast - timerAttackCast > 0.6))
-                {
-                    launch();
-                    _alreadyShoot = true;
-
-                }
-
-                return true;
-            }
-
-            return false;
+            return _timerShootCast < _maxTimerShootCast;
         }
     }
 }

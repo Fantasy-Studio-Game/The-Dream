@@ -9,7 +9,7 @@ namespace Assets.Scripts.Enermy.Behavior
         {
         }
 
-        public void Attack(ref float timerAttackCast, ref float speed, ref Animator animator)
+        public void Attack(ref float speed, ref Animator animator, Action launch)
         {
             //if (!_isExplosion)
             //{
@@ -32,7 +32,7 @@ namespace Assets.Scripts.Enermy.Behavior
             //}
         }
 
-        public bool IsAttacking(ref float timerAttackCast, ref float speed, Action launch)
+        public bool IsAttacking()
         {
             // This enermy always moves
             return false;

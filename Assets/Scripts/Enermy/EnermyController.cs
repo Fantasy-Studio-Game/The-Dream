@@ -8,12 +8,10 @@ using UnityEngine;
 // so, to use it, We must use other class inherit this class 
 public class EnermyController : MonoBehaviour
 {
-
     public bool isTowardLeft = true;
     public float speed = 1.0f;
     public float distanceMove = 5.0f;
     public float distanceView = 3.0f;
-    public float timerAttackCast = 2.0f;
     public float maxHealth = 100;
     public int shield = 10;
     public int atk = 10;
@@ -32,10 +30,7 @@ public class EnermyController : MonoBehaviour
 
     //---------------------------------------------
 
-    private float _timerAttackCast;
     private float _health;
-
-
 
     // Trigger function
     void Start()
@@ -48,7 +43,6 @@ public class EnermyController : MonoBehaviour
 
         // stop to idle
         _speed = 0;
-        _timerAttackCast = 0;
 
         if (isTowardLeft)
         {
@@ -65,7 +59,7 @@ public class EnermyController : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (attackMethod.IsAttacking(ref _timerAttackCast, ref _speed, Launch))
+        if (attackMethod.IsAttacking())
         {
             return;
         }
@@ -126,9 +120,8 @@ public class EnermyController : MonoBehaviour
 
     protected void Attack()
     {
-        attackMethod.Attack(ref _timerAttackCast, ref _speed, ref _animator);
+        attackMethod.Attack(ref _speed, ref _animator, Launch);
     }
-
 
 
     // public process event method

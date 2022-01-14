@@ -23,7 +23,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             if (targetRigid2d != null)
             {
                 // v = v0 + at
-                speed += acceleration * Time.deltaTime * 0.2f;
+                speed += acceleration * Time.deltaTime * 0.15f;
 
                 attack();
                 moving(true);

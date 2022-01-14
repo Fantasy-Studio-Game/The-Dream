@@ -6,7 +6,6 @@ using UnityEngine;
 public class ExplRock : EnermyController
 {
     public float acceleration = 0.01f;
-    public float explosionTimeCast = 5.0f; // 5.0 seconds
 
     private BoxCollider2D boxCollider2D;
     private bool _isExplosion = false;
@@ -16,6 +15,7 @@ public class ExplRock : EnermyController
         boxCollider2D = GetComponent<BoxCollider2D>();
 
         actionBehavior = new FollowActionBahavior(distanceView, speed);
+
     }    
 
     // general function
@@ -23,13 +23,13 @@ public class ExplRock : EnermyController
     {
         if (canMove)
         {
-            explosionTimeCast -= Time.deltaTime;
+            //explosionTimeCast -= Time.deltaTime;
 
-            if (_distanceMove < 0)
-            {
-                attackMethod.Attack(ref timerAttackCast, ref _speed, ref _animator);
-                return;
-            }
+            //if (_distanceMove < 0)
+            //{
+            //    attackMethod.Attack(ref timerAttackCast, ref _speed, ref _animator);
+            //    return;
+            //}
 
             Vector2 position = _rigidbody2D.position;
             position.x = position.x + Time.deltaTime * _speed * _direction;

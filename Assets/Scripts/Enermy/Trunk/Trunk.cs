@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Trunk : EnermyController
 {
+    public float timerAttackCast = 2.0f;
     public GameObject projectilePrefab;
 
     private void Awake()
     {
-        attackMethod = new ShootAttack();
-        (attackMethod as ShootAttack).TimerAttackCast = timerAttackCast;
+        attackMethod = new ShootAttack(timerAttackCast);
 
         actionBehavior = new NormalActionBehavior(distanceView, speed);
     }

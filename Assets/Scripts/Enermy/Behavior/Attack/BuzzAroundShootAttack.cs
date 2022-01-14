@@ -5,23 +5,13 @@ namespace Assets.Scripts.Enermy.Behavior.Attack
 {
     public class BuzzAroundShootAttack : IAttack
     {
-        private Action fire;
-
-        public void Attack(ref float timerAttackCast, ref float speed, ref Animator animator)
+        public void Attack(ref float speed, ref Animator animator, Action launch)
         {
-            if (fire != null)
-            {
-                fire();
-            }
+            launch();
         }
 
-        public bool IsAttacking(ref float timerAttackCast, ref float speed, Action launch)
+        public bool IsAttacking()
         {
-            if (fire == null)
-            {
-                fire = launch;
-            }
-
             return false;
         }
     }
