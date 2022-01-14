@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7886872055195728914}
   - component: {fileID: -4255749611347292592}
   - component: {fileID: 1997932984}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rino
   m_TagString: Untagged
   m_Icon: {fileID: 0}

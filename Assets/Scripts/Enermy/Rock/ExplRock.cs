@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class ExplRock : EnermyController
 {
-    public float acceleration = 0.1f;
+    public float acceleration = 0.01f;
+    public float explosionTimeCast = 5.0f; // 5.0 seconds
 
     private BoxCollider2D boxCollider2D;
     private bool _isExplosion = false;
-    private float _explosionTime = 0.8f;
     private void Awake()
     {
         attackMethod = new ExplosionAttack();
@@ -23,12 +23,12 @@ public class ExplRock : EnermyController
     {
         if (canMove)
         {
-            _distanceMove -= Time.deltaTime * _speed;
+            explosionTimeCast -= Time.deltaTime;
 
             if (_distanceMove < 0)
             {
-                _direction = -_direction;
-                _distanceMove = distanceMove;
+                attackMethod.Attack(ref timerAttackCast, ref _speed, ref _animator);
+                return;
             }
 
             Vector2 position = _rigidbody2D.position;
@@ -38,10 +38,6 @@ public class ExplRock : EnermyController
 
             _rigidbody2D.MovePosition(position);
 
-            if (_speed == 0)
-            {
-                _speed = speed;
-            }
 
         }
     }
@@ -50,6 +46,13 @@ public class ExplRock : EnermyController
     {
         // follow player and............
         // :)) explode bummmmmmmm
+
+        // start up
+        if (collision.gameObject.GetComponent<PlayerController>() != null)
+        {
+            (actionBehavior as FollowActionBahavior).startUpbytouch(collision.gameObject.GetComponent<Rigidbody2D>());
+            _animator.SetTrigger("Awake");
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)

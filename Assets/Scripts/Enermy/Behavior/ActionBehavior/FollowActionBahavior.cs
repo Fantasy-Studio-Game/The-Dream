@@ -15,12 +15,15 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             this.distanceView = distanceView;
             this.acceleration = acceleration;
         }
+
+        public Rigidbody2D TargetRigid2d { private set { targetRigid2d = value; } get { return targetRigid2d; } }
+
         public void BehaveInContext(int direction, ref float speed, ref Rigidbody2D rigidbody2D, ref Animator animator, Action attack, Action<bool> moving)
         {
             if (targetRigid2d != null)
             {
                 // v = v0 + at
-                speed += acceleration * Time.deltaTime;
+                speed += acceleration * Time.deltaTime * 0.2f;
 
                 attack();
                 moving(true);
@@ -41,6 +44,18 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
                 {
                     speed = 0;
                 }
+            }
+        }
+
+        public void startUpbytouch(Rigidbody2D target)
+        {
+            if (targetRigid2d == null)
+            {
+                targetRigid2d = target;
+            }
+            else
+            {
+                // call attack
             }
         }
 
