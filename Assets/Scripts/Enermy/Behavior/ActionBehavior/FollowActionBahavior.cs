@@ -23,11 +23,13 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             // follow a target
             if (targetRigid2d != null)
             {
-                // v = v0 + at
-                speed += acceleration * Time.deltaTime * 0.15f;
+                if (Vector2.Distance(rigidbody2D.position, targetRigid2d.position) > 0.5f)
+                {
+                    speed += acceleration * Time.deltaTime;
 
-                attack();
-                moving(true);
+                    attack();
+                    moving(true);
+                }
             }
             else
             {
@@ -39,9 +41,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 
                     // start enermy only once
                     animator.SetTrigger("Awake"); // --> run
-                }
-
-                
+                }                
             }
         }
 
@@ -61,5 +61,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
         {
             return targetRigid2d != null;
         }
+
+
     }
 }
