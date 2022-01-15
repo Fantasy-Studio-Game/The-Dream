@@ -30,7 +30,10 @@ public class PauseMenu : MonoBehaviour
         isPause = true;
     }
     public void Load () {
-        Time.timeScale = 1f;
+
+    }
+    public void Save () {
+
     }
     public void Mainmenu () {
         Time.timeScale = 1f;
