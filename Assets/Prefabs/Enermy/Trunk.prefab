@@ -170,6 +170,6 @@ MonoBehaviour:
   distanceView: 3
   maxHealth: 100
   shield: 10
-  atk: 10
+  atk: 7
   timerAttackCast: 1
   projectilePrefab: {fileID: 4203161915360233477, guid: b8ee605167165a944b680e1f49e0b202, type: 3}

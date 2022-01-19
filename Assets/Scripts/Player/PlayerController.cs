@@ -145,7 +145,6 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             animator.SetTrigger("Hurt");
-            rb2d.AddForce(-lookDirection * 2000);
             //playSound(hitSound);
             isInvincible = true;
             invincibleTimer = timeInvincible;

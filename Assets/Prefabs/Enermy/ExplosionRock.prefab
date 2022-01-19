@@ -171,5 +171,5 @@ MonoBehaviour:
   maxHealth: 100
   shield: 100
   atk: 100
-  acceleration: 0.5
-  countDownTimer: 5
+  acceleration: 0.6
+  countDownTimer: 6
