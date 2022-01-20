@@ -58,6 +58,9 @@ public class PlayerController : MonoBehaviour
     // Projectile
     public GameObject projectilePrefab;
 
+    // teleport
+    private bool isAllowTeleport = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -203,4 +206,21 @@ public class PlayerController : MonoBehaviour
         checkPoint = position;
     }
 
+    public void Teleport(Vector2 position)
+    {
+        if (isAllowTeleport == true)
+        {
+            StartCoroutine(TeleportAction(position));
+        }
+
+    }
+
+    IEnumerator TeleportAction(Vector2 position)
+    {
+        animator.SetTrigger("Cast Spell");
+        isAllowTeleport = false;
+        transform.position = position;
+        yield return new WaitForSeconds(2f);
+        isAllowTeleport = true;
+    }
 }
