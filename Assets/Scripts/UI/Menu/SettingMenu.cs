@@ -6,9 +6,8 @@ using UnityEngine.UI;
 
 public class SettingMenu : MonoBehaviour
 {
-    public bool isSettingOpen = false;
-
     ///////// UI ///////
+    public GameObject MainMenu;
     public Toggle FullScreenToggle;
     public Slider MusicSlider;
     public Slider SFXSlider;
@@ -25,8 +24,13 @@ public class SettingMenu : MonoBehaviour
     float sfxVolume;
 
     ////// Quality and Resolution///////
+    int originalQualityIndex;
     int currentQualityIndex;
+
+    bool originalFullScreen;
     bool currentFullScreen;
+
+    int originalResolutionIndex;
     int currentResolutionIndex;
 
     // Start is called before the first frame update
@@ -71,6 +75,7 @@ public class SettingMenu : MonoBehaviour
             if (resolutions[i].width == Screen.currentResolution.width &&
                 resolutions[i].height == Screen.currentResolution.height) {
                 currentResolutionIndex = resolutions.Length - i - 1;
+                originalResolutionIndex = currentResolutionIndex;
             }
         }
         resolutionDropDown.AddOptions(optionsResolution);
@@ -86,19 +91,15 @@ public class SettingMenu : MonoBehaviour
             optionsQuality.Add(option);
         }
         currentQualityIndex = QualitySettings.GetQualityLevel();
+        originalQualityIndex = currentQualityIndex;
         qualityDropDown.AddOptions(optionsQuality);
         qualityDropDown.value = currentQualityIndex;
         qualityDropDown.RefreshShownValue();
 
         //Get FullScreen
         currentFullScreen = Screen.fullScreen;
+        originalFullScreen = currentFullScreen;
         FullScreenToggle.isOn = currentFullScreen;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void ChangeMusicVolume(float volume) 
@@ -115,21 +116,62 @@ public class SettingMenu : MonoBehaviour
 
     public void SetQuality(int qualityIndex) 
     {
-        //QualitySettings.SetQualityLevel(qualityIndex);
         currentQualityIndex = qualityIndex;
     }
 
     public void SetFullScreen(bool isFullScreen) 
     {
-        //Screen.fullScreen = isFullScreen;
         currentFullScreen = isFullScreen;
+        Screen.fullScreen = isFullScreen;
     }
 
     public void SetResolution(int resolutionIndex) 
     {        
-        //Resolution resolution = resolutions[resolutionIndex];
-        //Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-        currentResolutionIndex = resolutions.Length - resolutionIndex - 1;
-        //Debug.Log(currentResolutionIndex);
+        currentResolutionIndex = resolutionIndex;
+    }
+
+    public void BackToMainMenu() {
+        ///Reset volume
+        audioMixer.SetFloat("MusicVolume", originalMusicVolume);
+        audioMixer.SetFloat("SFXVolume", originalSFXVolume);
+
+        ///Reset value
+        musicVolume = originalMusicVolume;
+        MusicSlider.value = originalMusicVolume;
+
+        sfxVolume = originalSFXVolume;
+        SFXSlider.value = originalSFXVolume;
+
+        currentResolutionIndex = originalResolutionIndex;
+        resolutionDropDown.value = currentResolutionIndex;
+        resolutionDropDown.RefreshShownValue();
+
+        currentQualityIndex = originalQualityIndex;
+        qualityDropDown.value = currentQualityIndex;
+        qualityDropDown.RefreshShownValue();
+
+        currentFullScreen = originalFullScreen;
+        FullScreenToggle.isOn = currentFullScreen;
+
+        MainMenu.SetActive(true);
+    }
+
+    public void ApplySetting() {
+        //// Save Volume
+        originalMusicVolume = musicVolume;
+        originalSFXVolume = sfxVolume;
+
+        //// Save Quality
+        QualitySettings.SetQualityLevel(currentQualityIndex);
+        originalQualityIndex = currentQualityIndex;
+
+        //// Save Full Screen
+        Screen.fullScreen = currentFullScreen;
+        originalFullScreen = currentFullScreen;
+
+        //// Save Resolution
+        Resolution resolution = resolutions[resolutions.Length - currentResolutionIndex - 1];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+        originalResolutionIndex = currentResolutionIndex;
     }
 }

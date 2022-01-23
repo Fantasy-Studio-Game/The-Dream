@@ -5,16 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void Play() {
+    ///////// UI /////////
+    public GameObject settingMenu;
+
+    public void PlayGame() {
         SceneManager.LoadScene("Level 1");
     }
-    public void Load () {
+    public void LoadGame () {
         
     }
-    public void Options () {
-        
+    public void SettingsGame () {
+        settingMenu.SetActive(true);
     }
-    public void Exit () {
+    public void ExitGame () {
         Application.Quit();
     }
 }
