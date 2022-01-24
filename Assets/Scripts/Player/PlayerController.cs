@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     // rigibody prob
     private Rigidbody2D rb2d;
-    float horizontal;
-    float vertical;
 
     //Timer for damage
     public float timeInvincible = 0.6f;
@@ -37,7 +36,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 2.5f;
 
     //look direction
-    Vector2 lookDirection = new Vector2(0, 0);
+    Vector2 lookDirection = new Vector2(0, -1);
     //Animation
     private Animator animator;
 
@@ -48,6 +47,7 @@ public class PlayerController : MonoBehaviour
     // shield
     public GameObject magicShield;
     private bool isAllowMagicShield = true;
+    private int currentShields = 1;
     public float magicShieldActiveTime = 2.0f;
     public float magicShieldCooldownTime = 3.0f;
 
@@ -61,23 +61,36 @@ public class PlayerController : MonoBehaviour
     // teleport
     private bool isAllowTeleport = true;
 
+    //input actions
+    PlayerInputActions inputActions;
+    Vector2 currentInput;
+
+    // sound
+    AudioSource audioSource;
+    public AudioSource footStepSource;
+
     // Start is called before the first frame update
     void Start()
     {
         checkPoint = transform.position;
         rb2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
-        currentHearts = 3;
+        currentHearts = maxHearts;
         animator = GetComponent<Animator>();
         HeartSystem.instance.SetValue(currentHearts, maxHearts);
+        audioSource = GetComponent<AudioSource>();
+
+        inputActions = new PlayerInputActions();
+        inputActions.Player.Enable();
+        inputActions.Player.Movement.performed += OnMovement;
+        inputActions.Player.Movement.canceled += OnMovement;
+        inputActions.Player.Launch.performed += OnLaunch;
+        inputActions.Player.Shield.performed += OnShield;
     }
 
     // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
-
         if (isInvincible)
         {
             invincibleTimer -= Time.deltaTime;
@@ -86,51 +99,43 @@ public class PlayerController : MonoBehaviour
                 isInvincible = false;
             }
         }
-
-        Vector2 move = new Vector2(horizontal, vertical);
-        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
-        {
-            lookDirection.Set(move.x, move.y);
-            lookDirection.Normalize();
-        }
-
-        animator.SetFloat("Look X", lookDirection.x);
-        animator.SetFloat("Look Y", lookDirection.y);
-        animator.SetFloat("Speed", move.magnitude);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isAllowMagicShield == true)
-            {
-                StartCoroutine(CastSpell());
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            if (isAllowAttacking == true)
-            {
-                StartCoroutine(Launch());
-            }
-        }
     }
 
     void FixedUpdate()
     {
         if (isAllowMoving)
         {
-            Vector2 position = transform.position;
-            position.x += (2f * horizontal * Time.deltaTime * speed);
-            position.y += (2f * vertical * Time.deltaTime * speed);
-            rb2d.MovePosition(position);
+            if (currentInput.magnitude > 0.01)
+            {
+                Vector2 position = transform.position;
+                position.x += (2f * currentInput.x * speed * Time.deltaTime);
+                position.y += (2f * currentInput.y * speed * Time.deltaTime);
+                rb2d.MovePosition(position);
+            }
+
+            Vector2 move = new Vector2(currentInput.x, currentInput.y);
+            if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+            {
+                if (!footStepSource.isPlaying)
+                    footStepSource.Play();
+                lookDirection.Set(move.x, move.y);
+                lookDirection.Normalize();
+            }
+            else
+            {
+                footStepSource.Stop();
+            }
+
+
+            animator.SetFloat("Look X", lookDirection.x);
+            animator.SetFloat("Look Y", lookDirection.y);
+            animator.SetFloat("Speed", move.magnitude);
         }
     }
 
     public void AddHeart(int amount)
     {
-        Debug.Log("Add heart");
         currentHearts += amount;
-        Debug.Log(currentHearts);
         HeartSystem.instance.SetValue(currentHearts, maxHearts);
     }
 
@@ -176,10 +181,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    IEnumerator CastSpell()
+    IEnumerator Shield()
     {
         animator.SetTrigger("Cast Spell");
         isAllowMagicShield = false;
+        currentShields--;
         magicShield.SetActive(true);
 
         yield return new WaitForSeconds(magicShieldActiveTime);
@@ -222,5 +228,50 @@ public class PlayerController : MonoBehaviour
         transform.position = position;
         yield return new WaitForSeconds(2f);
         isAllowTeleport = true;
+    }
+
+    // input actions
+    void OnMovement(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            currentInput = context.ReadValue<Vector2>();
+
+        }
+
+        if (context.canceled)
+        {
+            currentInput = Vector2.zero;
+        }
+    }
+
+    void OnLaunch(InputAction.CallbackContext context)
+    {
+
+        if (isAllowAttacking == true)
+        {
+            StartCoroutine(Launch());
+        }
+
+    }
+
+    void OnShield(InputAction.CallbackContext context)
+    {
+
+        if (isAllowMagicShield == true && currentShields > 0)
+        {
+            StartCoroutine(Shield());
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        rb2d.velocity = Vector2.zero;
+        rb2d.angularVelocity = 0f;
+    }
+
+    public void AddShield(int num)
+    {
+        currentShields += num;
     }
 }
