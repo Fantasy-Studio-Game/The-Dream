@@ -82,7 +82,7 @@ public class EnermyController : MonoBehaviour
     }
 
     protected virtual void Moving(bool canMove)
-    {        
+    {
         if (canMove)
         {
             _distanceMove -= Time.deltaTime * _speed;
@@ -99,7 +99,7 @@ public class EnermyController : MonoBehaviour
             _animator.SetFloat("Horizontal", _direction);
 
             _rigidbody2D.MovePosition(position);
-                        
+
         }
     }
 
@@ -122,4 +122,9 @@ public class EnermyController : MonoBehaviour
         _animator.SetTrigger("Hit");
     }
 
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        _rigidbody2D.velocity = Vector2.zero;
+        _rigidbody2D.angularVelocity = 0f;
+    }
 }

@@ -64,6 +64,10 @@ public class PlayerController : MonoBehaviour
     PlayerInputActions inputActions;
     Vector2 currentInput;
 
+    // sound
+    AudioSource audioSource;
+    public AudioSource footStepSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,6 +77,7 @@ public class PlayerController : MonoBehaviour
         currentHearts = maxHearts;
         animator = GetComponent<Animator>();
         HeartSystem.instance.SetValue(currentHearts, maxHearts);
+        audioSource = GetComponent<AudioSource>();
 
         inputActions = new PlayerInputActions();
         inputActions.Player.Enable();
@@ -101,6 +106,7 @@ public class PlayerController : MonoBehaviour
         {
             if (currentInput.magnitude > 0.01)
             {
+                Debug.Log(currentInput);
                 Vector2 position = transform.position;
                 position.x += (2f * currentInput.x * speed * Time.deltaTime);
                 position.y += (2f * currentInput.y * speed * Time.deltaTime);
@@ -110,14 +116,14 @@ public class PlayerController : MonoBehaviour
             Vector2 move = new Vector2(currentInput.x, currentInput.y);
             if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
             {
-                //if (!footStepSource.isPlaying)
-                //    footStepSource.Play();
+                if (!footStepSource.isPlaying)
+                    footStepSource.Play();
                 lookDirection.Set(move.x, move.y);
                 lookDirection.Normalize();
             }
             else
             {
-                //footStepSource.Stop();
+                footStepSource.Stop();
             }
 
 
@@ -228,12 +234,12 @@ public class PlayerController : MonoBehaviour
     // input actions
     void OnMovement(InputAction.CallbackContext context)
     {
-        Debug.Log(11);
         if (context.performed)
         {
             currentInput = context.ReadValue<Vector2>();
 
         }
+
         if (context.canceled)
         {
             currentInput = Vector2.zero;
@@ -257,5 +263,11 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(CastSpell());
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        rb2d.velocity = Vector2.zero;
+        rb2d.angularVelocity = 0f;
     }
 }
