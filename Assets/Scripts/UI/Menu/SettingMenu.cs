@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class SettingMenu : MonoBehaviour
 {
     ///////// UI ///////
-    public GameObject MainMenu;
+    public GameObject PreviousMenu;
     public Toggle FullScreenToggle;
     public Slider MusicSlider;
     public Slider SFXSlider;
@@ -130,7 +130,7 @@ public class SettingMenu : MonoBehaviour
         currentResolutionIndex = resolutionIndex;
     }
 
-    public void BackToMainMenu() {
+    public void BackToPreviousMenu() {
         ///Reset volume
         audioMixer.SetFloat("MusicVolume", originalMusicVolume);
         audioMixer.SetFloat("SFXVolume", originalSFXVolume);
@@ -153,7 +153,7 @@ public class SettingMenu : MonoBehaviour
         currentFullScreen = originalFullScreen;
         FullScreenToggle.isOn = currentFullScreen;
 
-        MainMenu.SetActive(true);
+        PreviousMenu.SetActive(true);
     }
 
     public void ApplySetting() {
