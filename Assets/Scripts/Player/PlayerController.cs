@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     // shield
     public GameObject magicShield;
     private bool isAllowMagicShield = true;
+    private int currentShields = 1;
     public float magicShieldActiveTime = 2.0f;
     public float magicShieldCooldownTime = 3.0f;
 
@@ -106,7 +107,6 @@ public class PlayerController : MonoBehaviour
         {
             if (currentInput.magnitude > 0.01)
             {
-                Debug.Log(currentInput);
                 Vector2 position = transform.position;
                 position.x += (2f * currentInput.x * speed * Time.deltaTime);
                 position.y += (2f * currentInput.y * speed * Time.deltaTime);
@@ -135,9 +135,7 @@ public class PlayerController : MonoBehaviour
 
     public void AddHeart(int amount)
     {
-        Debug.Log("Add heart");
         currentHearts += amount;
-        Debug.Log(currentHearts);
         HeartSystem.instance.SetValue(currentHearts, maxHearts);
     }
 
@@ -183,10 +181,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    IEnumerator CastSpell()
+    IEnumerator Shield()
     {
         animator.SetTrigger("Cast Spell");
         isAllowMagicShield = false;
+        currentShields--;
         magicShield.SetActive(true);
 
         yield return new WaitForSeconds(magicShieldActiveTime);
@@ -259,9 +258,9 @@ public class PlayerController : MonoBehaviour
     void OnShield(InputAction.CallbackContext context)
     {
 
-        if (isAllowMagicShield == true)
+        if (isAllowMagicShield == true && currentShields > 0)
         {
-            StartCoroutine(CastSpell());
+            StartCoroutine(Shield());
         }
     }
 
@@ -269,5 +268,10 @@ public class PlayerController : MonoBehaviour
     {
         rb2d.velocity = Vector2.zero;
         rb2d.angularVelocity = 0f;
+    }
+
+    public void AddShield(int num)
+    {
+        currentShields += num;
     }
 }
