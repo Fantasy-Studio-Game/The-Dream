@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
         EnermyController enemy = other.GetComponent<EnermyController>();
         if (enemy != null)
         {
-            Debug.Log("Hit enemy: ", enemy);
+            enemy.GetDamage(20);
         }
         Destroy(gameObject);
     }

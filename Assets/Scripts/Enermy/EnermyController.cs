@@ -118,7 +118,7 @@ public class EnermyController : MonoBehaviour
     public void GetDamage(int damage)
     {
         _health -= damage * (100 - shield) / 100;
-
+        this.GetComponentInChildren<EnemyHealthBar>()?.SetValue((float)_health/maxHealth);
         _animator.SetTrigger("Hit");
     }
 
