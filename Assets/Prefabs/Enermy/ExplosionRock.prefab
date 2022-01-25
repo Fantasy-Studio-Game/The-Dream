@@ -172,7 +172,7 @@ MonoBehaviour:
   maxHealth: 50
   shield: 0
   atk: 100
-  acceleration: 0.6
+  acceleration: 0.58
   countDownTimer: 6
 --- !u!1001 &1695869160434918936
 PrefabInstance:
