@@ -28,7 +28,7 @@ public class EnermyController : MonoBehaviour
 
     //---------------------------------------------
 
-    private float _health;
+    protected float _health;
 
     // Trigger function
     void Start()
@@ -115,7 +115,7 @@ public class EnermyController : MonoBehaviour
 
 
     // public process event method
-    public void GetDamage(int damage)
+    virtual public void GetDamage(int damage)
     {
         _health -= damage * (100 - shield) / 100;
         this.GetComponentInChildren<EnemyHealthBar>()?.SetValue((float)_health/maxHealth);

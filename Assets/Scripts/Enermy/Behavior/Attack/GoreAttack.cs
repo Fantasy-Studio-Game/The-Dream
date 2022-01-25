@@ -21,8 +21,8 @@ namespace Assets.Scripts.Enermy.Behavior
         }
         public void Attack(ref float speed, ref Animator animator, Action launch)
         {
-            _speed = speed;
-            speed = _maxSpeed * 2.5f;
+            _speed = speed * 2;
+            speed = _maxSpeed * 2f;
 
             _angryTimer = _maxAngryTimer;
 

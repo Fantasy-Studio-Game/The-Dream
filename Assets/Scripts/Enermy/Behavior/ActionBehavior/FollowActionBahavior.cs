@@ -35,7 +35,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             else
             {
                 // find player
-                RaycastHit2D detectedPayer = Physics2D.Raycast(rigidbody2D.position + Vector2.up * 0.1f, new Vector2(direction, 0), distanceView, LayerMask.GetMask("Player"));
+                RaycastHit2D detectedPayer = Physics2D.CircleCast(rigidbody2D.position + Vector2.up * 0.1f, 1.5f, new Vector2(direction, 0), distanceView, LayerMask.GetMask("Player"));
                 if (detectedPayer.collider != null)
                 {
                     targetRigid2d = detectedPayer.rigidbody;
