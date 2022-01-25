@@ -13,7 +13,7 @@ public class NorRock : EnermyController
     private void Awake()
     {
         BoxCollider2D boxCollider2D = GetComponent<BoxCollider2D>();
-        attackMethod = new GoreAttack(speed/2, angryTimer);
+        attackMethod = new GoreAttack(speed / 2, angryTimer);
         actionBehavior = new NormalActionBehavior(distanceView, speed);
         Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
         _originPosition = rigidbody.position;
@@ -71,8 +71,8 @@ public class NorRock : EnermyController
 
     public override void GetDamage(int damage)
     {
+        StartCoroutine(DetectAttacker());
         actionBehavior = new NormalActionBehavior(distanceView, speed);
-
         _health -= damage * (100 - shield) / 100;
         this.GetComponentInChildren<EnemyHealthBar>()?.SetValue((float)_health / maxHealth);
         _animator.SetTrigger("Hit");
@@ -81,8 +81,8 @@ public class NorRock : EnermyController
 
     IEnumerator DetectAttacker()
     {
-        distanceView += 10f;
+        distanceView += 3f;
         yield return new WaitForSeconds(0.5f);
-        distanceView -= 10f;
+        distanceView -= 3f;
     }
 }

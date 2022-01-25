@@ -1,6 +1,7 @@
 using Assets.Scripts.Enermy.Behavior;
 using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 using UnityEngine;
+using System.Collections;
 
 public class Trunk : EnermyController
 {
@@ -35,5 +36,22 @@ public class Trunk : EnermyController
             TrunkProjectile projectile = projectileObject.GetComponent<TrunkProjectile>();
             projectile.Launch(directionVec.normalized, 100, atk);
         }
+    }
+
+    public override void GetDamage(int damage)
+    {
+        StartCoroutine(DetectAttacker());
+        actionBehavior = new NormalActionBehavior(distanceView, speed);
+        _health -= damage * (100 - shield) / 100;
+        this.GetComponentInChildren<EnemyHealthBar>()?.SetValue((float)_health / maxHealth);
+        _animator.SetTrigger("Hit");
+
+    }
+
+    IEnumerator DetectAttacker()
+    {
+        distanceView += 3f;
+        yield return new WaitForSeconds(0.5f);
+        distanceView -= 3f;
     }
 }

@@ -48,8 +48,8 @@ public class TrunkProjectile : MonoBehaviour
     {
         //ParticleSystem particle = Instantiate(hitParticleSystem, _rigidbody2D.position, Quaternion.identity);
         //particle.Play();
-
-        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        Debug.Log(collision.gameObject.name);
+        PlayerController player = collision.gameObject.GetComponentInParent<PlayerController>();
 
         if (player != null)
         {

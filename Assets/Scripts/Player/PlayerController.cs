@@ -33,6 +33,12 @@ public class PlayerController : MonoBehaviour
         get { return currentHearts; }
         set { currentHearts = value; }
     }
+
+    private float currentStamina;
+    public float maxStamina = 100;
+    public float staminaRate = 15;
+
+
     public float speed = 2.5f;
 
     //look direction
@@ -53,6 +59,7 @@ public class PlayerController : MonoBehaviour
 
     // Attack
     private bool isAllowAttacking = true;
+    public float attackingStamina = 20f;
     public float attackingCooldownTime = 1f;
 
     // Projectile
@@ -76,6 +83,7 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         currentHearts = maxHearts;
+        currentStamina = 0;
         animator = GetComponent<Animator>();
         HeartSystem.instance.SetValue(currentHearts, maxHearts);
         audioSource = GetComponent<AudioSource>();
@@ -91,6 +99,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (currentStamina < maxStamina)
+        {
+            currentStamina += staminaRate * Time.deltaTime;
+            UIStaminaBar.instance.SetValue(currentStamina / (float)maxStamina);
+        }
         if (isInvincible)
         {
             invincibleTimer -= Time.deltaTime;
@@ -197,6 +210,9 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Launch()
     {
+        currentStamina -= attackingStamina;
+        UIStaminaBar.instance.SetValue(currentStamina / (float)maxStamina);
+
         animator.SetTrigger("Launch");
         isAllowAttacking = false;
         Quaternion rotation = Quaternion.Euler(0.0F, 0.0F, Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg);
@@ -256,7 +272,7 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        if (isAllowAttacking == true)
+        if (isAllowAttacking == true && currentStamina > attackingStamina)
         {
             StartCoroutine(Launch());
         }
