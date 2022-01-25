@@ -199,7 +199,7 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetTrigger("Launch");
         isAllowAttacking = false;
-        Quaternion rotation = Quaternion.Euler(0.0F, 0.0F, Mathf.Atan2 (lookDirection.y, lookDirection.x) * Mathf.Rad2Deg);
+        Quaternion rotation = Quaternion.Euler(0.0F, 0.0F, Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg);
         GameObject projectileObject = Instantiate(projectilePrefab, rb2d.position + Vector2.up * 0.5f, rotation);
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(lookDirection, 300f);
@@ -234,6 +234,10 @@ public class PlayerController : MonoBehaviour
     // input actions
     void OnMovement(InputAction.CallbackContext context)
     {
+        if (this == null)
+        {
+            return;
+        }
         if (context.performed)
         {
             currentInput = context.ReadValue<Vector2>();
@@ -248,7 +252,10 @@ public class PlayerController : MonoBehaviour
 
     void OnLaunch(InputAction.CallbackContext context)
     {
-
+        if (this == null)
+        {
+            return;
+        }
         if (isAllowAttacking == true)
         {
             StartCoroutine(Launch());
@@ -258,7 +265,10 @@ public class PlayerController : MonoBehaviour
 
     void OnShield(InputAction.CallbackContext context)
     {
-
+        if (this == null)
+        {
+            return;
+        }
         if (isAllowMagicShield == true && currentShields > 0)
         {
             StartCoroutine(Shield());
