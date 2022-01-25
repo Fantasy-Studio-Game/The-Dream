@@ -113,6 +113,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""90a1a04f-f6eb-45f2-a76f-7bce3d34bad5"",
+                    ""path"": ""<Joystick>/stick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""814c91bc-c8aa-4428-9a51-39b83141bb2f"",
                     ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
@@ -124,8 +135,30 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""490f9390-3218-4785-a429-c5116971468e"",
+                    ""path"": ""<HID::Controller>/button2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Launch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""177c42f5-00e3-468a-9497-130e9d8a9cd3"",
                     ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shield"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25c7fc10-c74e-42d7-9cea-e8c79f6b1dbc"",
+                    ""path"": ""<HID::Controller>/button5"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
