@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!50 &6167668050794837267
 Rigidbody2D:
   serializedVersion: 4
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTowardLeft: 1
-  speed: 1
+  speed: 1.5
   distanceMove: 5
   distanceView: 3
   maxHealth: 100

@@ -168,7 +168,7 @@ MonoBehaviour:
   isTowardLeft: 1
   speed: 2.5
   distanceMove: 20
-  distanceView: 6
+  distanceView: 3
   maxHealth: 50
   shield: 0
   atk: 100
