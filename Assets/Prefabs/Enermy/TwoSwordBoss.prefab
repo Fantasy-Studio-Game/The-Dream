@@ -152,7 +152,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.088510945, y: 0.6101129}
+  m_Offset: {x: 0.05025512, y: 1.1048882}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -163,7 +163,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1415069, y: 1.2202249}
+  m_Size: {x: 0.79975474, y: 0.84276724}
   m_EdgeRadius: 0
 --- !u!114 &1478766704520349567
 MonoBehaviour:
@@ -178,14 +178,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTowardLeft: 1
-  speed: 1.2
+  speed: 0.8
   distanceMove: 5
-  distanceView: 20
+  distanceView: 2
   maxHealth: 100
   shield: 50
   atk: 15
-  castTimer: 1.5
-  castDelay: 0.1
+  castTimer: 2.75
+  castDelay: 1.25
   appearTimer: 2
 --- !u!95 &5596422915134788856
 Animator:

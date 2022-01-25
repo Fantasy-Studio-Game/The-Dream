@@ -7,7 +7,7 @@ using UnityEngine;
 public class SwordBoss : EnermyController
 {
     public float castTimer; // 1.5f
-    public float castDelay = 0.2f;
+    public float castDelay;
     public float appearTimer = 2.0f;
 
     //private Rigidbody2D teleportationJutsu;
@@ -31,42 +31,66 @@ public class SwordBoss : EnermyController
 
     private IEnumerator CastWaveAttack()
     {
-        _speed = 0;
-        yield return new WaitForSeconds(castTimer);
+        if (actionBehavior.IsAwake() && !attackMethod.IsAttacking())
+        {
+            _speed = 0;
+            _animator.SetBool("Attack", true); // --> Attack
 
-        Vector2 directionVec = (actionBehavior as FollowActionBahavior).TargetRigid2d.position - _rigidbody2D.position;
-        directionVec.Normalize();
+            yield return new WaitForSeconds(castTimer);
 
-        _rigidbody2D.AddForce(directionVec * 20);
+            Vector2 directionVec = (actionBehavior as FollowActionBahavior).TargetRigid2d.position - _rigidbody2D.position;
+            directionVec.Normalize();
 
-        yield return new WaitForSeconds(castDelay);
+            if (directionVec.x > 0)
+            {
+                _direction = 1;
+            }
+            else
+            {
+                _direction = -1;
+            }
 
-        _speed = speed;
-        _animator.SetBool("Attack", false);
+            _animator.SetFloat("Horizontal", _direction);
+
+            // dash behavior
+            _rigidbody2D.AddForce(directionVec * 300);
+
+            yield return new WaitForSeconds(castDelay);
+
+            _rigidbody2D.velocity = Vector2.zero;
+            _speed = speed;
+            _animator.SetBool("Attack", false);
+
+            attackMethod.UnAttack(ref _speed, ref _animator);
+
+        }
     }
 
     protected override void Moving(bool canMove)
     {
-        Vector2 directionVec = (actionBehavior as FollowActionBahavior).TargetRigid2d.position - _rigidbody2D.position;
-        directionVec.Normalize();
-
-        Vector2 position = _rigidbody2D.position;
-
-        position.x = position.x + Time.deltaTime * _speed * directionVec.x;
-        position.y = position.y + Time.deltaTime * _speed * directionVec.y;
-
-        if (directionVec.x > 0)
+        if (!attackMethod.IsAttacking())
         {
-            _direction = 1;
-        }
-        else
-        {
-            _direction = -1;
-        }
+            Vector2 directionVec = (actionBehavior as FollowActionBahavior).TargetRigid2d.position - _rigidbody2D.position;
+            directionVec.Normalize();
 
-        _animator.SetFloat("Horizontal", _direction);
+            Vector2 position = _rigidbody2D.position;
 
-        _rigidbody2D.MovePosition(position);
+            position.x = position.x + Time.deltaTime * _speed * directionVec.x;
+            position.y = position.y + Time.deltaTime * _speed * directionVec.y;
+
+            if (directionVec.x > 0)
+            {
+                _direction = 1;
+            }
+            else
+            {
+                _direction = -1;
+            }
+
+            _animator.SetFloat("Horizontal", _direction);
+
+            _rigidbody2D.MovePosition(position);
+        }
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
@@ -90,8 +114,14 @@ public class SwordBoss : EnermyController
     private IEnumerator ShieldTimer()
     {
         yield return new WaitForSeconds(appearTimer);
-
+        appearTimer = 0;
         shield = boss_shield;
         _speed = speed;
+        (actionBehavior as FollowActionBahavior).KeyAttack = true;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        OnCollisionEnter2D(collision);
     }
 }

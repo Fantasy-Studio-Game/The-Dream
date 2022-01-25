@@ -14,15 +14,14 @@ namespace Assets.Scripts.Enermy.Behavior
         }
         public void Attack(ref float speed, ref Animator animator, Action launch)
         {
-
-            animator.SetBool("Attack", true); // --> Attack
-
-            launch();
+            launch();            
+            
+            isAttatck = true;
         }
 
         public void UnAttack(ref float speed, ref Animator animator)
         {
-            return;
+            isAttatck = false;
         }
 
         public bool IsAttacking()
