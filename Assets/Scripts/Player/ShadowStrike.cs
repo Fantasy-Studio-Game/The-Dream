@@ -2,30 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class ShadowStrike : MonoBehaviour
 {
     Rigidbody2D rb2d;
     private Vector2 originPosition;
-    int type;
     // Start is called before the first frame update
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
         originPosition = rb2d.position;
     }
-
+    // Start is called before the first frame update
     void Start()
     {
-        Destroy (gameObject, this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length); 
+        Destroy(gameObject, this.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(rb2d.position, originPosition) > 4.5)
-        {
-            Destroy(gameObject);
-        }
 
     }
 
@@ -39,8 +35,14 @@ public class Projectile : MonoBehaviour
         EnermyController enemy = other.GetComponent<EnermyController>();
         if (enemy != null)
         {
-            enemy.GetDamage(20);
+            enemy.GetDamage(30);
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
+
+        TrunkProjectile projectile = other.GetComponent<TrunkProjectile>();
+        if (projectile != null)
+        {
+            Destroy(projectile.gameObject);
+        }
     }
 }

@@ -53,6 +53,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Strike"",
+                    ""type"": ""Button"",
+                    ""id"": ""b994b894-98e1-4104-a0c3-29d80e1c67c6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -165,6 +174,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Shield"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5942cb9d-e29a-416d-8c7d-f456d612e2da"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Strike"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -176,6 +196,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Launch = m_Player.FindAction("Launch", throwIfNotFound: true);
         m_Player_Shield = m_Player.FindAction("Shield", throwIfNotFound: true);
+        m_Player_Strike = m_Player.FindAction("Strike", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -238,6 +259,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Launch;
     private readonly InputAction m_Player_Shield;
+    private readonly InputAction m_Player_Strike;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -245,6 +267,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Launch => m_Wrapper.m_Player_Launch;
         public InputAction @Shield => m_Wrapper.m_Player_Shield;
+        public InputAction @Strike => m_Wrapper.m_Player_Strike;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,6 +286,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Shield.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShield;
                 @Shield.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShield;
                 @Shield.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShield;
+                @Strike.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStrike;
+                @Strike.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStrike;
+                @Strike.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStrike;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -276,6 +302,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Shield.started += instance.OnShield;
                 @Shield.performed += instance.OnShield;
                 @Shield.canceled += instance.OnShield;
+                @Strike.started += instance.OnStrike;
+                @Strike.performed += instance.OnStrike;
+                @Strike.canceled += instance.OnStrike;
             }
         }
     }
@@ -285,5 +314,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnLaunch(InputAction.CallbackContext context);
         void OnShield(InputAction.CallbackContext context);
+        void OnStrike(InputAction.CallbackContext context);
     }
 }

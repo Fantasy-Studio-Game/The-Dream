@@ -62,8 +62,17 @@ public class PlayerController : MonoBehaviour
     public float attackingStamina = 20f;
     public float attackingCooldownTime = 1f;
 
+    // shadowStrike
+    private bool isAllowShadowStrike = true;
+    public float shadowStrikeStamina = 30f;
+    public float shadowStrikeCooldownTime = 1.5f;
+
     // Projectile
     public GameObject projectilePrefab;
+
+    //Skill
+    public GameObject shadowStrikePrefab;
+
 
     // teleport
     private bool isAllowTeleport = true;
@@ -94,6 +103,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Movement.canceled += OnMovement;
         inputActions.Player.Launch.performed += OnLaunch;
         inputActions.Player.Shield.performed += OnShield;
+        inputActions.Player.Strike.performed += OnStrike;
     }
 
     // Update is called once per frame
@@ -224,6 +234,22 @@ public class PlayerController : MonoBehaviour
         isAllowAttacking = true;
     }
 
+    IEnumerator Strike()
+    {
+        currentStamina -= shadowStrikeStamina;
+        UIStaminaBar.instance.SetValue(currentStamina / (float)maxStamina);
+
+        animator.SetTrigger("Launch");
+        isAllowShadowStrike = false;
+        Quaternion rotation = Quaternion.Euler(0.0F, 0.0F, Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg);
+        GameObject strikeObject = Instantiate(shadowStrikePrefab, rb2d.position + Vector2.up * 0.4f, rotation);
+        ShadowStrike strike = strikeObject.GetComponent<ShadowStrike>();
+        strike.Launch(lookDirection, 200f);
+
+        yield return new WaitForSeconds(shadowStrikeCooldownTime);
+        isAllowShadowStrike = true;
+    }
+
     public void SetCheckpoint(Vector2 position)
     {
         checkPoint = position;
@@ -275,6 +301,19 @@ public class PlayerController : MonoBehaviour
         if (isAllowAttacking == true && currentStamina > attackingStamina)
         {
             StartCoroutine(Launch());
+        }
+
+    }
+
+    void OnStrike(InputAction.CallbackContext context)
+    {
+        if (this == null)
+        {
+            return;
+        }
+        if (isAllowShadowStrike == true && currentStamina > shadowStrikeStamina)
+        {
+            StartCoroutine(Strike());
         }
 
     }
