@@ -34,10 +34,11 @@ public class PlayerController : MonoBehaviour
         set { currentHearts = value; }
     }
 
+    //Stamina
     private float currentStamina;
     public float maxStamina = 100;
     public float staminaRate = 15;
-
+    private int staminaBooster = 1;
 
     public float speed = 2.5f;
 
@@ -92,10 +93,12 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         currentHearts = maxHearts;
-        currentStamina = 0;
+        currentStamina = 50;
         animator = GetComponent<Animator>();
         HeartSystem.instance.SetValue(currentHearts, maxHearts);
         audioSource = GetComponent<AudioSource>();
+        UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
+        UIShield.instance.SetValue(currentShields);
 
         inputActions = new PlayerInputActions();
         inputActions.Player.Enable();
@@ -111,7 +114,7 @@ public class PlayerController : MonoBehaviour
     {
         if (currentStamina < maxStamina)
         {
-            currentStamina += staminaRate * Time.deltaTime;
+            currentStamina += staminaRate * Time.deltaTime * staminaBooster;
             UIStaminaBar.instance.SetValue(currentStamina / (float)maxStamina);
         }
         if (isInvincible)
@@ -209,6 +212,7 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("Cast Spell");
         isAllowMagicShield = false;
         currentShields--;
+        UIShield.instance.SetValue(currentShields);
         magicShield.SetActive(true);
 
         yield return new WaitForSeconds(magicShieldActiveTime);
@@ -339,5 +343,18 @@ public class PlayerController : MonoBehaviour
     public void AddShield(int num)
     {
         currentShields += num;
+        UIShield.instance.SetValue(currentShields);
+    }
+
+    public void AddStamina(float t)
+    {
+        StartCoroutine(BoostStamina(t));
+    }
+
+    IEnumerator BoostStamina(float t)
+    {
+        staminaBooster = 2;
+        yield return new WaitForSeconds(t);
+        staminaBooster = 1;
     }
 }

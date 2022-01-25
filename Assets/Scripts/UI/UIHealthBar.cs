@@ -11,11 +11,11 @@ public class UIHealthBar : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        originalSize = mask.rectTransform.rect.width;
         instance = this;
     }
     void Start()
     {
-        originalSize = mask.rectTransform.rect.width;
     }
 
     // Update is called once per frame
