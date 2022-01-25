@@ -199,7 +199,8 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetTrigger("Launch");
         isAllowAttacking = false;
-        GameObject projectileObject = Instantiate(projectilePrefab, rb2d.position + Vector2.up * 0.5f, Quaternion.identity);
+        Quaternion rotation = Quaternion.Euler(0.0F, 0.0F, Mathf.Atan2 (lookDirection.y, lookDirection.x) * Mathf.Rad2Deg);
+        GameObject projectileObject = Instantiate(projectilePrefab, rb2d.position + Vector2.up * 0.5f, rotation);
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(lookDirection, 300f);
 
