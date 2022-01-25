@@ -9,11 +9,12 @@ public class MainMenu : MonoBehaviour
     public GameObject settingMenu;
     public GameObject startMenu;
 
+
     public void PlayGame() {
         startMenu.SetActive(true);
     }
     public void LoadGame () {
-        
+
     }
     public void SettingsGame () {
         settingMenu.SetActive(true);
