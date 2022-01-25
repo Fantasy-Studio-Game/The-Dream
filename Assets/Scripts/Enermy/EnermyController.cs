@@ -1,5 +1,7 @@
 using Assets.Scripts.Enermy.Behavior;
 using Assets.Scripts.Enermy.Behavior.ActionBehavior;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Note: this class is a element in Strategy Pattern,
@@ -117,9 +119,11 @@ public class EnermyController : MonoBehaviour
     // public process event method
     virtual public void GetDamage(int damage)
     {
+        Debug.Log("Here");
         _health -= damage * (100 - shield) / 100;
-        this.GetComponentInChildren<EnemyHealthBar>()?.SetValue((float)_health/maxHealth);
+        GetComponentInChildren<EnemyHealthBar>()?.SetValue(_health/maxHealth);
         _animator.SetTrigger("Hit");
+
     }
 
     private void OnCollisionExit2D(Collision2D other)

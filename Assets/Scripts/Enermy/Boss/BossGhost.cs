@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 using Assets.Scripts.Enermy.Behavior.Attack;
 using Assets.Scripts.Helper;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Enermy
@@ -20,7 +21,7 @@ namespace Assets.Scripts.Enermy
         private Vector2 targetCollierVector;
         private Rigidbody2D playerRigid;
 
-
+        private int boss_shield;
 
         //private float _maxAngleCastBullet = 270f;
         private float _aAngleCastBullet = 15f;
@@ -36,6 +37,9 @@ namespace Assets.Scripts.Enermy
             attackMethod = new BuzzAroundShootAttack();
 
             actionBehavior = new GhostActionBehavior(delayTransition, appearTimer, castSpell);
+
+            boss_shield = shield;
+            shield = 100;
 
         }
 
@@ -94,14 +98,24 @@ namespace Assets.Scripts.Enermy
 
                     playerRigid = controller.GetComponent<Rigidbody2D>();
                     capsuleCollider2D.size = originCollierSize; // change after appear effect
+
+                    StartCoroutine(ShieldTimer());
                 }
             }
+        }
+
+        private IEnumerator ShieldTimer()
+        {
+            yield return new WaitForSeconds(appearTimer);
+
+            shield = boss_shield;
         }
 
         private void OnCollisionStay2D(Collision2D collision)
         {
             OnCollisionEnter2D(collision);
         }
+
 
     }
 }

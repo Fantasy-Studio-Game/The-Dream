@@ -144,7 +144,7 @@ MonoBehaviour:
   distanceMove: 5
   distanceView: 3
   maxHealth: 200
-  shield: 15
+  shield: 40
   atk: 10
   rateActiveRange: 3
   appearTimer: 5.5
