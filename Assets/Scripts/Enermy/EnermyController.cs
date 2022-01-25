@@ -119,7 +119,7 @@ public class EnermyController : MonoBehaviour
     // public process event method
     virtual public void GetDamage(int damage)
     {
-        Debug.Log("Here");
+        Debug.Log("Here " + shield);
         _health -= damage * (100 - shield) / 100;
         GetComponentInChildren<EnemyHealthBar>()?.SetValue(_health/maxHealth);
         _animator.SetTrigger("Hit");

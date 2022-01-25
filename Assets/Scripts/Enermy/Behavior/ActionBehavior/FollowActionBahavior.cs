@@ -7,6 +7,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
     {
         private float acceleration;
         private float distanceView;
+        private Action startup;
 
         private Rigidbody2D targetRigid2d;
 
@@ -14,6 +15,13 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
         {
             this.distanceView = distanceView;
             this.acceleration = acceleration;
+        }
+
+        public FollowActionBahavior(float distanceView, float acceleration, Action startup)
+        {
+            this.distanceView = distanceView;
+            this.acceleration = acceleration;
+            this.startup = startup;
         }
 
         public Rigidbody2D TargetRigid2d { private set { targetRigid2d = value; } get { return targetRigid2d; } }
@@ -42,6 +50,11 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 
                     // start enermy only once
                     animator.SetTrigger("Awake"); // --> run
+
+                    if (startup != null)
+                    {
+                        startup.Invoke();
+                    }
                 }                
             }
         }
