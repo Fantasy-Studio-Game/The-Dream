@@ -38,7 +38,6 @@ public class SuperBoss : EnermyController
 
     private Vector2 GetVector2Enermy()
     {
-        Debug.Log((actionBehavior as FollowDefenceActionBehavior).TargetRigid2d.position + " === " + _rigidbody2D.position);
         Vector2 directionVec = (actionBehavior as FollowDefenceActionBehavior).TargetRigid2d.position - (_rigidbody2D.position - Vector2.down * 1f);
         directionVec.Normalize();
 
@@ -61,7 +60,6 @@ public class SuperBoss : EnermyController
             Vector2 directionVec = GetVector2Enermy();
 
             directionVec = (Vector2)attackPoint.position + directionVec * 0.5f;
-            Debug.Log(directionVec - _rigidbody2D.position);
 
             Collider2D[] detectedPlayers = Physics2D.OverlapCircleAll(directionVec, attackRange, playerEnemyMask);
             foreach (Collider2D c in detectedPlayers)
@@ -101,7 +99,6 @@ public class SuperBoss : EnermyController
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController controller = collision.gameObject.GetComponent<PlayerController>();
-        Debug.Log("collision");
         if (controller != null)
         {
             if (actionBehavior.IsAwake())
