@@ -124,4 +124,10 @@ public class SwordBoss : EnermyController
     {
         OnCollisionEnter2D(collision);
     }
+
+    protected override void DestroyEnermy()
+    {
+
+        Destroy(gameObject);
+    }
 }
