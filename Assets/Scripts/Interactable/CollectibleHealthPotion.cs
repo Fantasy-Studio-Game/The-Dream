@@ -6,6 +6,7 @@ public class CollectibleHealthPotion : GlowEffect
 {
     public int amount = 10;
     bool isTriggered = false;
+    public AudioClip audioClip;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,6 +22,7 @@ public class CollectibleHealthPotion : GlowEffect
                 isTriggered = true;
 
                 controller.ChangeHealth(amount);
+                controller.PlayCollectingAudio(audioClip);
                 Destroy(gameObject);
 
             }

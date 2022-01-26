@@ -6,6 +6,7 @@ public class Checkpoint : MonoBehaviour
 {
     public GameObject activatedCheckpoint;
     public GameObject unActivatedCheckpoint;
+    public AudioClip audioClip;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class Checkpoint : MonoBehaviour
         if (controller != null)
         {
             controller.SetCheckpoint(transform.position);
+            controller.PlayCollectingAudio(audioClip);
             activatedCheckpoint.SetActive(true);
             unActivatedCheckpoint.SetActive(false);
         }

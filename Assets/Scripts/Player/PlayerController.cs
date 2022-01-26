@@ -369,4 +369,8 @@ public class PlayerController : MonoBehaviour
         gameOverMenu.SetActive(true);
         bgMusic.ChangeBGMusic(deathMusic);
     }
+
+    public void PlayCollectingAudio(AudioClip audioClip) {
+        audioSource.PlayOneShot(audioClip);
+    }
 }
