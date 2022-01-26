@@ -8,6 +8,7 @@ namespace Assets.Scripts.Enermy
 {
     public class BossGhost : EnermyController
     {
+        public GameObject nextLevelCircle;
         public float rateActiveRange = 3f;
         public float appearTimer = 3.20f;
         public float delayTransition = 1f;
@@ -115,9 +116,10 @@ namespace Assets.Scripts.Enermy
         {
             OnCollisionEnter2D(collision);
         }
+
         protected override void DestroyEnermy()
         {
-
+            nextLevelCircle.SetActive(true);
             Destroy(gameObject);
         }
 
