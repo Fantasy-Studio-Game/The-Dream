@@ -10,6 +10,13 @@ public class SwordBoss : EnermyController
     public float castDelay;
     public float appearTimer = 2.0f;
 
+    public AudioClip attackSound;
+    public AudioClip appearSound;
+
+    public GameObject backgroundAudio;
+
+    private AudioSource audioSource;
+
     //private Rigidbody2D teleportationJutsu;
     private int boss_shield;
 
@@ -22,6 +29,7 @@ public class SwordBoss : EnermyController
         boss_shield = shield;
         shield = 100;
 
+        audioSource = GetComponent<AudioSource>();
     }
 
     protected override void Launch()
@@ -60,6 +68,7 @@ public class SwordBoss : EnermyController
             _rigidbody2D.velocity = Vector2.zero;
             _speed = speed;
             _animator.SetBool("Attack", false);
+            audioSource.PlayOneShot(attackSound);
 
             attackMethod.UnAttack(ref _speed, ref _animator);
 
@@ -108,6 +117,11 @@ public class SwordBoss : EnermyController
 
     private void StartUp()
     {
+        var backgroundMusic = backgroundAudio.GetComponent<AudioSource>();
+        backgroundMusic.Stop();
+        backgroundMusic.clip = appearSound;
+        backgroundMusic.Play();
+
         StartCoroutine(ShieldTimer());
     }
 
