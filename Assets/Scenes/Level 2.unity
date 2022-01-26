@@ -48605,6 +48605,10 @@ PrefabInstance:
       value: TwoSwordBoss
       objectReference: {fileID: 0}
     - target: {fileID: 1478766704520349567, guid: 04d8e6e359f78a241908ec16d6c051fe, type: 3}
+      propertyPath: backgroundAudio
+      value: 
+      objectReference: {fileID: 1849009999}
+    - target: {fileID: 1478766704520349567, guid: 04d8e6e359f78a241908ec16d6c051fe, type: 3}
       propertyPath: nextLevelCircle
       value: 
       objectReference: {fileID: 903263405085811661}
@@ -67965,6 +67969,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8677dfca68de4b1479233a7132aec8ac, type: 3}
+--- !u!1 &1849009999 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4999550677101814229, guid: 8677dfca68de4b1479233a7132aec8ac, type: 3}
+  m_PrefabInstance: {fileID: 1849009998}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1851062533
 PrefabInstance:
   m_ObjectHideFlags: 0
