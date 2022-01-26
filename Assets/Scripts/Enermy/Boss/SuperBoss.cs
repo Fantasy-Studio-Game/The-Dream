@@ -7,6 +7,11 @@ using UnityEngine;
 public class SuperBoss : EnermyController
 {
     public float appearTimer;
+    public float attackRange;
+    public float deadtime;
+
+    public Transform attackPoint;
+    public LayerMask playerProjectileMask;
 
 
     private int boss_shield;
@@ -15,7 +20,7 @@ public class SuperBoss : EnermyController
     {
         attackMethod = new SlashWaveAttack();
 
-        actionBehavior = new FollowDefenceActionBehavior(distanceView, StartUp);
+        actionBehavior = new FollowDefenceActionBehavior(distanceView, attackRange, attackPoint, playerProjectileMask, StartUp);
 
         boss_shield = shield;
         shield = 100;
@@ -69,7 +74,7 @@ public class SuperBoss : EnermyController
 
     protected override void Moving(bool canMove)
     {
-        Vector2 directionVec = (actionBehavior as FollowDefenceActionBehavior).TargetRigid2d.position - _rigidbody2D.position;
+        Vector2 directionVec = (actionBehavior as FollowDefenceActionBehavior).TargetRigid2d.position - _rigidbody2D.position + Vector2.down * 1f;
         directionVec.Normalize();
 
         Vector2 position = _rigidbody2D.position;
@@ -87,7 +92,7 @@ public class SuperBoss : EnermyController
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerController controller = collision.gameObject.GetComponent<PlayerController>();
-
+        Debug.Log("collision");
         if (controller != null)
         {
             if (actionBehavior.IsAwake())
@@ -114,5 +119,21 @@ public class SuperBoss : EnermyController
     private void OnCollisionStay2D(Collision2D collision)
     {
         OnCollisionEnter2D(collision);
+    }
+
+    protected override void DestroyEnermy()
+    {
+        _speed = 0;
+        shield = 100;
+        _animator.SetTrigger("Death");
+
+        Destroy(gameObject, deadtime);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null) return;
+
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }

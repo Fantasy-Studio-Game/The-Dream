@@ -7,14 +7,21 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
     {
         private float distanceView;
         private Action startup;
+        private float attackRange;
+
+        private Transform attackPoint;
+        private LayerMask playerProjectileMask;
 
         private Rigidbody2D targetRigid2d;
 
         public bool KeyAttack { get; set; }
 
-        public FollowDefenceActionBehavior(float distanceView, Action startup)
+        public FollowDefenceActionBehavior(float distanceView, float attackRange, Transform attackPoint, LayerMask playerProjectileMask, Action startup)
         {
             this.distanceView = distanceView;
+            this.attackRange = attackRange;
+            this.attackPoint = attackPoint;
+            this.playerProjectileMask = playerProjectileMask;
             this.startup = startup;
 
             KeyAttack = false;
@@ -27,13 +34,23 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             // follow a target
             if (targetRigid2d != null)
             {
+                // detected any projectile from player
+                Collider2D[] detectedProjectiles = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerProjectileMask);
+                if (detectedProjectiles.Length >= 1)
+                {
+                    animator.SetTrigger("Defence");
+                }
+
                 if (Vector2.Distance(rigidbody2D.position, targetRigid2d.position) > 0.5f)
                 {
                     moving(true);
                 }
-
-                //attack();
+                else
+                {
+                    //attack();
+                }
             }
+
             else
             {
                 // find player

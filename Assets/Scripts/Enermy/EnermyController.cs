@@ -60,11 +60,16 @@ public class EnermyController : MonoBehaviour
     {
         if (_health <= 0)
         {
-            Destroy(gameObject);
+            DestroyEnermy();
         }
 
         actionBehavior.BehaveInContext(_direction, ref _speed, ref _rigidbody2D, ref _animator, Attack, UnAttack, Moving);
 
+    }
+
+    protected virtual void DestroyEnermy()
+    {
+        Destroy(gameObject);
     }
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
