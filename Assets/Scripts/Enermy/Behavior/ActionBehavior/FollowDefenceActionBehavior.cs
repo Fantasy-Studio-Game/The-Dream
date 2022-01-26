@@ -41,13 +41,13 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
                     animator.SetTrigger("Defence");
                 }
 
-                if (Vector2.Distance(rigidbody2D.position, targetRigid2d.position) > 0.5f)
+                if (Vector2.Distance(rigidbody2D.position, targetRigid2d.position) < distanceView / 2)
                 {
-                    moving(true);
+                    attack();
                 }
                 else
                 {
-                    //attack();
+                    moving(true);
                 }
             }
 

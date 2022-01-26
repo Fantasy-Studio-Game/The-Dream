@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SuperBoss : EnermyController
 {
+    public float castTimer;
     public float appearTimer;
     public float attackRange;
     public float deadtime;
@@ -34,39 +35,38 @@ public class SuperBoss : EnermyController
 
     private IEnumerator CastWaveAttack()
     {
-        //if (actionBehavior.IsAwake() && !attackMethod.IsAttacking())
-        //{
-        //    _speed = 0;
-        //    _animator.SetBool("Attack", true); // --> Attack
+        Debug.Log(actionBehavior.IsAwake() + " === " + !attackMethod.IsAttacking());
+        if (actionBehavior.IsAwake() && !attackMethod.IsAttacking())
+        {
+            Debug.Log("Attack");
 
-        //    yield return new WaitForSeconds(castTimer);
+            _speed = 0;
+            _animator.SetTrigger("Attack"); // --> Attack
 
-        //    Vector2 directionVec = (actionBehavior as FollowActionBahavior).TargetRigid2d.position - _rigidbody2D.position;
-        //    directionVec.Normalize();
+            //yield return new WaitForSeconds(castTimer);
 
-        //    if (directionVec.x > 0)
-        //    {
-        //        _direction = 1;
-        //    }
-        //    else
-        //    {
-        //        _direction = -1;
-        //    }
+            //Vector2 directionVec = (actionBehavior as FollowActionBahavior).TargetRigid2d.position - _rigidbody2D.position;
+            //directionVec.Normalize();
 
-        //    _animator.SetFloat("Horizontal", _direction);
+            //if (directionVec.x > 0)
+            //{
+            //    _direction = 1;
+            //}
+            //else
+            //{
+            //    _direction = -1;
+            //}
 
-        //    // dash behavior
-        //    _rigidbody2D.AddForce(directionVec * 300);
+            //_animator.SetFloat("Horizontal", _direction);
 
-        //    yield return new WaitForSeconds(castDelay);
 
-        //    _rigidbody2D.velocity = Vector2.zero;
-        //    _speed = speed;
-        //    _animator.SetBool("Attack", false);
+            yield return new WaitForSeconds(castTimer);
 
-        //    attackMethod.UnAttack(ref _speed, ref _animator);
 
-        //}
+            attackMethod.UnAttack(ref _speed, ref _animator);
+            _speed = speed;
+
+        }
 
         yield return null;
     }

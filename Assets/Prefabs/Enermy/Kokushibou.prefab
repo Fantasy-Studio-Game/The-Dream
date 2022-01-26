@@ -173,6 +173,7 @@ MonoBehaviour:
   maxHealth: 200
   shield: 70
   atk: 20
+  castTimer: 2
   appearTimer: 1.3333334
   attackRange: 1
   deadtime: 4
