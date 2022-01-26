@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 3324795366992248426}
   - component: {fileID: 8507907610996506375}
   - component: {fileID: 7266161781103986575}
-  m_Layer: 0
+  - component: {fileID: 2536711232102497184}
+  m_Layer: 11
   m_Name: Kokushibou
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,3 +152,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2536711232102497184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177528271119259574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d3ddc85ec98ce749b7f3d29647dd895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTowardLeft: 1
+  speed: 0.5
+  distanceMove: 0
+  distanceView: 5
+  maxHealth: 200
+  shield: 70
+  atk: 20
+  appearTimer: 1.3333334

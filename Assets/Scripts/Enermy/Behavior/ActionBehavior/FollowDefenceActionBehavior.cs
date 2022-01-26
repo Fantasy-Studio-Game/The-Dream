@@ -3,17 +3,21 @@ using UnityEngine;
 
 namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 {
-    internal class FollowActionBahaviorNoA : IActionBehavior
+    internal class FollowDefenceActionBehavior : IActionBehavior
     {
         private float distanceView;
-        private float speed;
+        private Action startup;
 
         private Rigidbody2D targetRigid2d;
 
-        public FollowActionBahaviorNoA(float distanceView, float speed)
+        public bool KeyAttack { get; set; }
+
+        public FollowDefenceActionBehavior(float distanceView, Action startup)
         {
             this.distanceView = distanceView;
-            this.speed = speed;
+            this.startup = startup;
+
+            KeyAttack = false;
         }
 
         public Rigidbody2D TargetRigid2d { private set { targetRigid2d = value; } get { return targetRigid2d; } }
@@ -25,42 +29,33 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             {
                 if (Vector2.Distance(rigidbody2D.position, targetRigid2d.position) > 0.5f)
                 {
-                    speed = this.speed;
-
                     moving(true);
                 }
 
-                attack();
+                //attack();
             }
             else
             {
                 // find player
-                RaycastHit2D detectedPayer = Physics2D.CircleCast(rigidbody2D.position + Vector2.up * 0.1f, distanceView, new Vector2(direction, 0), distanceView, LayerMask.GetMask("Player"));
+                RaycastHit2D detectedPayer = Physics2D.CircleCast(rigidbody2D.position + Vector2.up * 0.1f, distanceView, new Vector2(direction, 0), 0f, LayerMask.GetMask("Player"));
                 if (detectedPayer.collider != null)
                 {
                     targetRigid2d = detectedPayer.rigidbody;
 
                     // start enermy only once
                     animator.SetTrigger("Awake"); // --> run
-                }
-            }
-        }
 
-        public void startUpbytouch(Rigidbody2D target)
-        {
-            if (targetRigid2d == null)
-            {
-                targetRigid2d = target;
-            }
-            else
-            {
-                // call attack
+                    if (startup != null)
+                    {
+                        startup.Invoke();
+                    }
+                }
             }
         }
 
         public bool IsAwake()
         {
-            return targetRigid2d != null;
+            return KeyAttack && targetRigid2d != null;
         }
 
 
