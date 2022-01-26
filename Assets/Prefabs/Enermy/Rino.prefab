@@ -169,10 +169,9 @@ MonoBehaviour:
   speed: 2
   distanceMove: 10
   distanceView: 5
-  maxHealth: 100
+  maxHealth: 50
   shield: 60
   atk: 10
-  healthBar: {fileID: 0}
   angryTimer: 5
 --- !u!1001 &6293214474958016638
 PrefabInstance:

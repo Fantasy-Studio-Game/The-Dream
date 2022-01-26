@@ -169,10 +169,9 @@ MonoBehaviour:
   speed: 1
   distanceMove: 5
   distanceView: 3
-  maxHealth: 100
+  maxHealth: 50
   shield: 10
   atk: 7
-  healthBar: {fileID: 0}
   timerAttackCast: 1
   projectilePrefab: {fileID: 4203161915360233477, guid: b8ee605167165a944b680e1f49e0b202, type: 3}
 --- !u!1001 &3621484539317653066
