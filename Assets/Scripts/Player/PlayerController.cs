@@ -88,6 +88,14 @@ public class PlayerController : MonoBehaviour
     public AudioClip deathMusic;
     public BackgroundMusic bgMusic;
 
+    //Character Sound
+    public AudioClip deathSound;
+    public AudioClip hitSound;
+    public AudioClip shieldSound;
+    public AudioClip launchSound;
+    public AudioClip strikeSound;
+
+
     // UI
     public GameObject gameOverMenu;
     
@@ -185,7 +193,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             animator.SetTrigger("Hurt");
-            //playSound(hitSound);
+            PlayOneShotAudio(hitSound);
             isInvincible = true;
             invincibleTimer = timeInvincible;
         }
@@ -206,6 +214,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetTrigger("Death");
                 Debug.Log("Death!");
                 rb2d.simulated = false;
+                PlayOneShotAudio(deathSound);
                 OnDeath();
             }
         }
@@ -221,6 +230,7 @@ public class PlayerController : MonoBehaviour
         currentShields--;
         UIShield.instance.SetValue(currentShields);
         magicShield.SetActive(true);
+        PlayOneShotAudio(shieldSound);
 
         yield return new WaitForSeconds(magicShieldActiveTime);
         magicShield.SetActive(false);
@@ -240,6 +250,7 @@ public class PlayerController : MonoBehaviour
         GameObject projectileObject = Instantiate(projectilePrefab, rb2d.position + Vector2.up * 0.5f, rotation);
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(lookDirection, 300f);
+        PlayOneShotAudio(launchSound);
 
         yield return new WaitForSeconds(attackingCooldownTime);
         isAllowAttacking = true;
@@ -256,6 +267,7 @@ public class PlayerController : MonoBehaviour
         GameObject strikeObject = Instantiate(shadowStrikePrefab, rb2d.position + Vector2.up * 0.4f, rotation);
         ShadowStrike strike = strikeObject.GetComponent<ShadowStrike>();
         strike.Launch(lookDirection, 200f);
+        PlayOneShotAudio(strikeSound);
 
         yield return new WaitForSeconds(shadowStrikeCooldownTime);
         isAllowShadowStrike = true;
@@ -370,7 +382,7 @@ public class PlayerController : MonoBehaviour
         bgMusic.ChangeBGMusic(deathMusic);
     }
 
-    public void PlayCollectingAudio(AudioClip audioClip) {
+    public void PlayOneShotAudio(AudioClip audioClip) {
         audioSource.PlayOneShot(audioClip);
     }
 }

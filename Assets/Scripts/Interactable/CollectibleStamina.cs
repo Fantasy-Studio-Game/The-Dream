@@ -21,7 +21,7 @@ public class CollectibleStamina : GlowEffect
             isTriggered = true;
 
             controller.AddStamina(time);
-            controller.PlayCollectingAudio(audioClip);
+            controller.PlayOneShotAudio(audioClip);
             Destroy(gameObject);
         }
     }

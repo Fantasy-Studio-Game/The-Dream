@@ -22,7 +22,7 @@ public class Checkpoint : MonoBehaviour
         if (controller != null)
         {
             controller.SetCheckpoint(transform.position);
-            controller.PlayCollectingAudio(audioClip);
+            controller.PlayOneShotAudio(audioClip);
             activatedCheckpoint.SetActive(true);
             unActivatedCheckpoint.SetActive(false);
         }
