@@ -7,20 +7,22 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
     {
         private float distanceView;
         private Action startup;
+        private float rashinRange;
         private float attackRange;
 
-        private Transform attackPoint;
+        private Transform rashinPoint;
         private LayerMask playerProjectileMask;
 
         private Rigidbody2D targetRigid2d;
 
         public bool KeyAttack { get; set; }
 
-        public FollowDefenceActionBehavior(float distanceView, float attackRange, Transform attackPoint, LayerMask playerProjectileMask, Action startup)
+        public FollowDefenceActionBehavior(float distanceView, float rashinRange, float attackRange, Transform rashinPoint, LayerMask playerProjectileMask, Action startup)
         {
             this.distanceView = distanceView;
+            this.rashinRange = rashinRange;
+            this.rashinPoint = rashinPoint;
             this.attackRange = attackRange;
-            this.attackPoint = attackPoint;
             this.playerProjectileMask = playerProjectileMask;
             this.startup = startup;
 
@@ -35,13 +37,13 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             if (targetRigid2d != null)
             {
                 // detected any projectile from player
-                Collider2D[] detectedProjectiles = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, playerProjectileMask);
+                Collider2D[] detectedProjectiles = Physics2D.OverlapCircleAll(rashinPoint.position, rashinRange, playerProjectileMask);
                 if (detectedProjectiles.Length >= 1)
                 {
                     animator.SetTrigger("Defence");
                 }
 
-                if (Vector2.Distance(rigidbody2D.position, targetRigid2d.position) < distanceView / 2)
+                if (Vector2.Distance((rigidbody2D.position - Vector2.down * 1f), targetRigid2d.position) < attackRange)
                 {
                     attack();
                 }

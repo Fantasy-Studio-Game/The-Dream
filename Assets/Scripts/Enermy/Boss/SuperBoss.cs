@@ -1,18 +1,21 @@
 using Assets.Scripts.Enermy.Behavior;
 using Assets.Scripts.Enermy.Behavior.ActionBehavior;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SuperBoss : EnermyController
 {
     public float castTimer;
+    public float timeDamged;
     public float appearTimer;
     public float attackRange;
+    public float rashinRange;
     public float deadtime;
 
+    public Transform rashinPoint;
     public Transform attackPoint;
     public LayerMask playerProjectileMask;
+    public LayerMask playerEnemyMask;
 
 
     private int boss_shield;
@@ -21,7 +24,7 @@ public class SuperBoss : EnermyController
     {
         attackMethod = new SlashWaveAttack();
 
-        actionBehavior = new FollowDefenceActionBehavior(distanceView, attackRange, attackPoint, playerProjectileMask, StartUp);
+        actionBehavior = new FollowDefenceActionBehavior(distanceView, rashinRange, attackRange, rashinPoint, playerProjectileMask, StartUp);
 
         boss_shield = shield;
         shield = 100;
@@ -33,34 +36,44 @@ public class SuperBoss : EnermyController
         StartCoroutine(CastWaveAttack());
     }
 
+    private Vector2 GetVector2Enermy()
+    {
+        Debug.Log((actionBehavior as FollowDefenceActionBehavior).TargetRigid2d.position + " === " + _rigidbody2D.position);
+        Vector2 directionVec = (actionBehavior as FollowDefenceActionBehavior).TargetRigid2d.position - (_rigidbody2D.position - Vector2.down * 1f);
+        directionVec.Normalize();
+
+        _animator.SetFloat("HorizontalX", directionVec.x);
+        _animator.SetFloat("HorizontalY", directionVec.y);
+
+        return directionVec;
+    }
+
     private IEnumerator CastWaveAttack()
     {
-        Debug.Log(actionBehavior.IsAwake() + " === " + !attackMethod.IsAttacking());
         if (actionBehavior.IsAwake() && !attackMethod.IsAttacking())
         {
-            Debug.Log("Attack");
 
             _speed = 0;
             _animator.SetTrigger("Attack"); // --> Attack
 
-            //yield return new WaitForSeconds(castTimer);
+            yield return new WaitForSeconds(timeDamged);
 
-            //Vector2 directionVec = (actionBehavior as FollowActionBahavior).TargetRigid2d.position - _rigidbody2D.position;
-            //directionVec.Normalize();
+            Vector2 directionVec = GetVector2Enermy();
 
-            //if (directionVec.x > 0)
-            //{
-            //    _direction = 1;
-            //}
-            //else
-            //{
-            //    _direction = -1;
-            //}
+            directionVec = (Vector2)attackPoint.position + directionVec * 0.5f;
+            Debug.Log(directionVec - _rigidbody2D.position);
 
-            //_animator.SetFloat("Horizontal", _direction);
+            Collider2D[] detectedPlayers = Physics2D.OverlapCircleAll(directionVec, attackRange, playerEnemyMask);
+            foreach (Collider2D c in detectedPlayers)
+            {
+                var player = c.GetComponent<PlayerController>();
+                if (player != null)
+                {
+                    player.ChangeHealth(-atk);
+                }
+            }
 
-
-            yield return new WaitForSeconds(castTimer);
+            yield return new WaitForSeconds(castTimer - timeDamged);
 
 
             attackMethod.UnAttack(ref _speed, ref _animator);
@@ -74,16 +87,12 @@ public class SuperBoss : EnermyController
 
     protected override void Moving(bool canMove)
     {
-        Vector2 directionVec = (actionBehavior as FollowDefenceActionBehavior).TargetRigid2d.position - _rigidbody2D.position + Vector2.down * 1f;
-        directionVec.Normalize();
+        Vector2 directionVec = GetVector2Enermy();
 
         Vector2 position = _rigidbody2D.position;
 
         position.x = position.x + Time.deltaTime * _speed * directionVec.x;
         position.y = position.y + Time.deltaTime * _speed * directionVec.y;
-
-        _animator.SetFloat("HorizontalX", directionVec.x);
-        _animator.SetFloat("HorizontalY", directionVec.y);
 
         _rigidbody2D.MovePosition(position);
     }
@@ -130,6 +139,7 @@ public class SuperBoss : EnermyController
         Destroy(gameObject, deadtime);
     }
 
+    // draw circle on editer
     private void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
