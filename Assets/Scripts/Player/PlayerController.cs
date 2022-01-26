@@ -85,6 +85,12 @@ public class PlayerController : MonoBehaviour
     // sound
     AudioSource audioSource;
     public AudioSource footStepSource;
+    public AudioClip deathMusic;
+    public BackgroundMusic bgMusic;
+
+    // UI
+    public GameObject gameOverMenu;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -200,6 +206,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetTrigger("Death");
                 Debug.Log("Death!");
                 rb2d.simulated = false;
+                OnDeath();
             }
         }
         UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
@@ -356,5 +363,14 @@ public class PlayerController : MonoBehaviour
         staminaBooster = 2;
         yield return new WaitForSeconds(t);
         staminaBooster = 1;
+    }
+
+    void OnDeath () {
+        gameOverMenu.SetActive(true);
+        bgMusic.ChangeBGMusic(deathMusic);
+    }
+
+    public void PlayCollectingAudio(AudioClip audioClip) {
+        audioSource.PlayOneShot(audioClip);
     }
 }

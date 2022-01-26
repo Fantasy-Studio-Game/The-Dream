@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activatedCheckpoint: {fileID: 3617263414924044892}
   unActivatedCheckpoint: {fileID: 1834020432944650536}
+  audioClip: {fileID: 8300000, guid: f43a8653d7d26574db5a6ad9151583fd, type: 3}
 --- !u!61 &1111499556066704914
 BoxCollider2D:
   m_ObjectHideFlags: 0

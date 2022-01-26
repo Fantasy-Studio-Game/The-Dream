@@ -5,7 +5,8 @@ using UnityEngine;
 public class CollectibleHeart : GlowEffect
 {
     bool isTriggered = false;
-    // Start is called before the first frame update
+    public AudioClip audioClip;
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isTriggered == true)
@@ -20,6 +21,7 @@ public class CollectibleHeart : GlowEffect
                 isTriggered = true;
 
                 controller.AddHeart(1);
+                controller.PlayCollectingAudio(audioClip);
                 Destroy(gameObject);
 
             }
@@ -30,6 +32,7 @@ public class CollectibleHeart : GlowEffect
                     isTriggered = true;
 
                     controller.ChangeHealth(controller.maxHealth);
+                    controller.PlayCollectingAudio(audioClip);
                     Destroy(gameObject);
 
                 }

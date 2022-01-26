@@ -340,6 +340,8 @@ MonoBehaviour:
   magicShieldCooldownTime: 3
   attackingStamina: 20
   attackingCooldownTime: 0.5
+  shadowStrikeStamina: 30
+  shadowStrikeCooldownTime: 1.5
   projectilePrefab: {fileID: 8387197683866177092, guid: 2f159d3757fa0af48a7090cd991b3365, type: 3}
   shadowStrikePrefab: {fileID: 8198758711514614147, guid: d44ef38c999f2d244b36d39c98fe59a4, type: 3}
   footStepSource: {fileID: 857759069}

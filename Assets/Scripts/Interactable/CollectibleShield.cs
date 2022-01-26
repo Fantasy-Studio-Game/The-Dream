@@ -12,6 +12,8 @@ public class CollectibleShield : MonoBehaviour
     Color color1 = Color.white;
     Color color2 = new Color(0.7f, 1f, 5, 1);
 
+    public AudioClip audioClip;
+
     void Start()
     {
         render = this.GetComponent<Renderer>();
@@ -45,6 +47,7 @@ public class CollectibleShield : MonoBehaviour
         if (controller != null)
         {
             controller.AddShield(1);
+            controller.PlayCollectingAudio(audioClip);
             Destroy(this.gameObject);
         }
     }
