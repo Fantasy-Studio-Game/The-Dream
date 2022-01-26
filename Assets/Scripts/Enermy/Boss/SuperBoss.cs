@@ -18,7 +18,13 @@ public class SuperBoss : EnermyController
     public LayerMask playerProjectileMask;
     public LayerMask playerEnemyMask;
 
+    public AudioClip attackSound;
+    public AudioClip deadSound;
+    public AudioClip appearSound;
 
+    public GameObject backgroundAudio;
+
+    private AudioSource audioSource;
     private int boss_shield;
 
     private void Awake()
@@ -30,6 +36,7 @@ public class SuperBoss : EnermyController
         boss_shield = shield;
         shield = 100;
 
+        audioSource = GetComponent<AudioSource>();
     }
 
     protected override void Launch()
@@ -72,6 +79,7 @@ public class SuperBoss : EnermyController
                 }
             }
 
+            audioSource.PlayOneShot(attackSound);
             yield return new WaitForSeconds(castTimer - timeDamged);
 
 
@@ -111,6 +119,11 @@ public class SuperBoss : EnermyController
 
     private void StartUp()
     {
+        var backgroundMusic = backgroundAudio.GetComponent<AudioSource>();
+        backgroundMusic.Stop();
+        backgroundMusic.clip = appearSound;
+        backgroundMusic.Play();
+
         StartCoroutine(ShieldTimer());
     }
 
@@ -135,6 +148,7 @@ public class SuperBoss : EnermyController
         _animator.SetTrigger("Death");
         
         nextLevelCircle.SetActive(true);
+        audioSource.PlayOneShot(deadSound);
         Destroy(gameObject, deadtime);
     }
 

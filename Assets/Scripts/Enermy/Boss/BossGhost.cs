@@ -17,6 +17,13 @@ namespace Assets.Scripts.Enermy
 
         public GameObject projectilePrefab;
 
+        public AudioClip attackSound;
+        public AudioClip appearSound;
+
+        public GameObject backgroundAudio;
+
+        private AudioSource audioSource;
+
         private CapsuleCollider2D capsuleCollider2D;
         private Vector2 originCollierSize;
         private Vector2 targetCollierVector;
@@ -42,10 +49,12 @@ namespace Assets.Scripts.Enermy
             boss_shield = shield;
             shield = 100;
 
+            audioSource = GetComponent<AudioSource>();
         }
 
         protected override void Launch()
         {
+            audioSource.PlayOneShot(attackSound);
             for (float angle = 0f; angle < 360; angle += _aAngleCastBullet)
             {
 
@@ -107,6 +116,11 @@ namespace Assets.Scripts.Enermy
 
         private IEnumerator ShieldTimer()
         {
+            var backgroundMusic = backgroundAudio.GetComponent<AudioSource>();
+            backgroundMusic.Stop();
+            backgroundMusic.clip = appearSound;
+            backgroundMusic.Play();
+
             yield return new WaitForSeconds(appearTimer);
 
             shield = boss_shield;
