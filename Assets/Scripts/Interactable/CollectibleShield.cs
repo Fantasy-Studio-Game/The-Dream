@@ -41,7 +41,6 @@ public class CollectibleShield : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(11);
         PlayerController controller = collision.GetComponent<PlayerController>();
         if (controller != null)
         {

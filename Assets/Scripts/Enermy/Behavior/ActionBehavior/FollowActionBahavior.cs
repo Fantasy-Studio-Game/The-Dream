@@ -11,10 +11,13 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 
         private Rigidbody2D targetRigid2d;
 
+        public bool KeyAttack { get; set; }
+
         public FollowActionBahavior(float distanceView, float acceleration)
         {
             this.distanceView = distanceView;
             this.acceleration = acceleration;
+            KeyAttack = true;
         }
 
         public FollowActionBahavior(float distanceView, float acceleration, Action startup)
@@ -22,6 +25,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             this.distanceView = distanceView;
             this.acceleration = acceleration;
             this.startup = startup;
+            KeyAttack = false;
         }
 
         public Rigidbody2D TargetRigid2d { private set { targetRigid2d = value; } get { return targetRigid2d; } }
@@ -31,19 +35,40 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
             // follow a target
             if (targetRigid2d != null)
             {
-                if (Vector2.Distance(rigidbody2D.position, targetRigid2d.position) > 0.5f)
+                if (startup == null)
                 {
-                    speed += acceleration * Time.deltaTime;
+                    // only following and attack always
+                    if (Vector2.Distance(rigidbody2D.position, targetRigid2d.position) > 0.5f)
+                    {
+                        speed += acceleration * Time.deltaTime;
 
-                    moving(true);
+                        moving(true);
+                    }
+
+                    attack();
                 }
+                else
+                {
+                    // attack when far enough
+                    float distance = Vector2.Distance(rigidbody2D.position, targetRigid2d.position);
+                    if (distance > 10f)
+                    {
+                        moving(true);
+                    }
+                    else
+                    {
+                        if (IsAwake())
+                        {
+                            attack();
+                        }
+                    }
 
-                attack();
+                }
             }
             else
             {
                 // find player
-                RaycastHit2D detectedPayer = Physics2D.CircleCast(rigidbody2D.position + Vector2.up * 0.1f, 1.5f, new Vector2(direction, 0), distanceView, LayerMask.GetMask("Player"));
+                RaycastHit2D detectedPayer = Physics2D.CircleCast(rigidbody2D.position + Vector2.up * 0.1f, distanceView, new Vector2(direction, 0), 0f, LayerMask.GetMask("Player"));
                 if (detectedPayer.collider != null)
                 {
                     targetRigid2d = detectedPayer.rigidbody;
@@ -73,7 +98,7 @@ namespace Assets.Scripts.Enermy.Behavior.ActionBehavior
 
         public bool IsAwake()
         {
-            return targetRigid2d != null;
+            return KeyAttack && targetRigid2d != null;
         }
 
 
