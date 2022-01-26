@@ -22,7 +22,7 @@ public class CollectibleHealthPotion : GlowEffect
                 isTriggered = true;
 
                 controller.ChangeHealth(amount);
-                controller.PlayCollectingAudio(audioClip);
+                controller.PlayOneShotAudio(audioClip);
                 Destroy(gameObject);
 
             }

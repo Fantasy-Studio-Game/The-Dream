@@ -24,7 +24,7 @@ public class PortalScript : MonoBehaviour
 
         if (controller != null)
         {
-            controller.PlayCollectingAudio(audioClip);
+            controller.PlayOneShotAudio(audioClip);
             controller.Teleport(destination.transform.position);
         }
     }

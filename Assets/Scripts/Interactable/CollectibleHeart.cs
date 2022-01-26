@@ -21,7 +21,7 @@ public class CollectibleHeart : GlowEffect
                 isTriggered = true;
 
                 controller.AddHeart(1);
-                controller.PlayCollectingAudio(audioClip);
+                controller.PlayOneShotAudio(audioClip);
                 Destroy(gameObject);
 
             }
@@ -32,7 +32,7 @@ public class CollectibleHeart : GlowEffect
                     isTriggered = true;
 
                     controller.ChangeHealth(controller.maxHealth);
-                    controller.PlayCollectingAudio(audioClip);
+                    controller.PlayOneShotAudio(audioClip);
                     Destroy(gameObject);
 
                 }

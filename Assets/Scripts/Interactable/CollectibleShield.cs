@@ -47,7 +47,7 @@ public class CollectibleShield : MonoBehaviour
         if (controller != null)
         {
             controller.AddShield(1);
-            controller.PlayCollectingAudio(audioClip);
+            controller.PlayOneShotAudio(audioClip);
             Destroy(this.gameObject);
         }
     }
