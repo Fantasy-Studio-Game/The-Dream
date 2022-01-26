@@ -5,6 +5,7 @@ using UnityEngine;
 public class PortalScript : MonoBehaviour
 {
     public GameObject destination;
+    public AudioClip audioClip;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,7 @@ public class PortalScript : MonoBehaviour
 
         if (controller != null)
         {
+            controller.PlayCollectingAudio(audioClip);
             controller.Teleport(destination.transform.position);
         }
     }

@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 4c2a0900f195b264dbc75d7547c4a69c, type: 3}
 --- !u!1001 &4436265915216421651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53,6 +54,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6842146886309022240}
     m_Modifications:
+    - target: {fileID: 243854883, guid: 3f1ae02d88fbd7541b3d82688efea7dd, type: 3}
+      propertyPath: audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4c2a0900f195b264dbc75d7547c4a69c, type: 3}
     - target: {fileID: 243854883, guid: 3f1ae02d88fbd7541b3d82688efea7dd, type: 3}
       propertyPath: destination
       value: 
@@ -124,6 +129,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6842146886309022240}
     m_Modifications:
+    - target: {fileID: 1213341926, guid: db314851f72bb434ea574251f7981a0a, type: 3}
+      propertyPath: audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4c2a0900f195b264dbc75d7547c4a69c, type: 3}
     - target: {fileID: 1213341926, guid: db314851f72bb434ea574251f7981a0a, type: 3}
       propertyPath: destination
       value: 
