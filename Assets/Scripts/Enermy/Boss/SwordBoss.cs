@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SwordBoss : EnermyController
 {
+    public GameObject nextLevelCircle;
     public float castTimer; // 1.5f
     public float castDelay;
     public float appearTimer = 2.0f;
@@ -141,7 +142,7 @@ public class SwordBoss : EnermyController
 
     protected override void DestroyEnermy()
     {
-
+        nextLevelCircle.SetActive(true);
         Destroy(gameObject);
     }
 }

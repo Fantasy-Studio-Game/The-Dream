@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SuperBoss : EnermyController
 {
+    public GameObject nextLevelCircle;
     public float castTimer;
     public float timeDamged;
     public float appearTimer;
@@ -145,6 +146,8 @@ public class SuperBoss : EnermyController
         _speed = 0;
         shield = 100;
         _animator.SetTrigger("Death");
+        
+        nextLevelCircle.SetActive(true);
         audioSource.PlayOneShot(deadSound);
         Destroy(gameObject, deadtime);
     }
