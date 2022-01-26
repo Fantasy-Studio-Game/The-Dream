@@ -93,10 +93,12 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         currentHearts = maxHearts;
-        currentStamina = 0;
+        currentStamina = 50;
         animator = GetComponent<Animator>();
         HeartSystem.instance.SetValue(currentHearts, maxHearts);
         audioSource = GetComponent<AudioSource>();
+        UIHealthBar.instance.SetValue(currentHealth / (float)maxHealth);
+        UIShield.instance.SetValue(currentShields);
 
         inputActions = new PlayerInputActions();
         inputActions.Player.Enable();
@@ -210,6 +212,7 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger("Cast Spell");
         isAllowMagicShield = false;
         currentShields--;
+        UIShield.instance.SetValue(currentShields);
         magicShield.SetActive(true);
 
         yield return new WaitForSeconds(magicShieldActiveTime);
@@ -340,6 +343,7 @@ public class PlayerController : MonoBehaviour
     public void AddShield(int num)
     {
         currentShields += num;
+        UIShield.instance.SetValue(currentShields);
     }
 
     public void AddStamina(float t)
