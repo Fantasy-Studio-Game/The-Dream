@@ -8,13 +8,15 @@ public class ExplRock : EnermyController
     public float acceleration = 0.5f;
     public float countDownTimer = 5.0f;
 
+    AudioSource audioSource;
+
     private void Awake()
     {
         BoxCollider2D boxCollider2D = GetComponent<BoxCollider2D>();
         attackMethod = new ExplosionAttack(ref boxCollider2D, countDownTimer);
 
         actionBehavior = new FollowActionBahavior(distanceView, acceleration);
-
+        audioSource = GetComponent<AudioSource>();
     }    
 
     // general function
@@ -61,6 +63,7 @@ public class ExplRock : EnermyController
             if ((attackMethod as ExplosionAttack).IsExplosion())
             {
                 collision.gameObject.GetComponent<PlayerController>().ChangeHealth(-atk);
+                audioSource.Play();
             }
 
             (actionBehavior as FollowActionBahavior).startUpbytouch(collision.gameObject.GetComponent<Rigidbody2D>());
