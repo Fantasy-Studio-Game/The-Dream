@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectibleHeart : MonoBehaviour
+public class CollectibleHeart : GlowEffect
 {
     bool isTriggered = false;
     // Start is called before the first frame update
@@ -12,7 +12,6 @@ public class CollectibleHeart : MonoBehaviour
         {
             return;
         }
-        Debug.Log("Trigger");
         PlayerController controller = collision.GetComponent<PlayerController>();
         if (controller != null)
         {

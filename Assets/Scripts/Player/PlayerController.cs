@@ -34,10 +34,11 @@ public class PlayerController : MonoBehaviour
         set { currentHearts = value; }
     }
 
+    //Stamina
     private float currentStamina;
     public float maxStamina = 100;
     public float staminaRate = 15;
-
+    private int staminaBooster = 1;
 
     public float speed = 2.5f;
 
@@ -111,7 +112,7 @@ public class PlayerController : MonoBehaviour
     {
         if (currentStamina < maxStamina)
         {
-            currentStamina += staminaRate * Time.deltaTime;
+            currentStamina += staminaRate * Time.deltaTime * staminaBooster;
             UIStaminaBar.instance.SetValue(currentStamina / (float)maxStamina);
         }
         if (isInvincible)
@@ -339,5 +340,17 @@ public class PlayerController : MonoBehaviour
     public void AddShield(int num)
     {
         currentShields += num;
+    }
+
+    public void AddStamina(float t)
+    {
+        StartCoroutine(BoostStamina(t));
+    }
+
+    IEnumerator BoostStamina(float t)
+    {
+        staminaBooster = 2;
+        yield return new WaitForSeconds(t);
+        staminaBooster = 1;
     }
 }

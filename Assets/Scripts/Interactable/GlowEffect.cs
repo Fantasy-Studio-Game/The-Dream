@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectibleShield : MonoBehaviour
+public class GlowEffect : MonoBehaviour
 {
+    // color
     float duration = 1.5f;
     private float t = 0;
     bool isReset = false;
     Renderer render;
 
     Color color1 = Color.white;
-    Color color2 = new Color(0.7f, 1f, 5, 1);
+    Color color2 = new Color(2f, 2f, 2f, 1f);
 
     void Start()
     {
@@ -37,15 +38,5 @@ public class CollectibleShield : MonoBehaviour
             color2 = temp;
         }
 
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        PlayerController controller = collision.GetComponent<PlayerController>();
-        if (controller != null)
-        {
-            controller.AddShield(1);
-            Destroy(this.gameObject);
-        }
     }
 }
