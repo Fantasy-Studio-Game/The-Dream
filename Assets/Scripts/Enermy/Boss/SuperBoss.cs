@@ -23,8 +23,8 @@ public class SuperBoss : EnermyController
 
     public GameObject backgroundAudio;
 
-    private int boss_shield;
     private AudioSource audioSource;
+    private int boss_shield;
 
     private void Awake()
     {

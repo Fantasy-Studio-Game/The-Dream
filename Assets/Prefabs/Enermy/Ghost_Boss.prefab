@@ -153,6 +153,9 @@ MonoBehaviour:
   castSpell: 5
   distanceAppearFromPlayer: 3
   projectilePrefab: {fileID: 7178478153185532040, guid: c521614b4328cf848a5fe9b2b9e81e69, type: 3}
+  attackSound: {fileID: 8300000, guid: e057846b0092cad4cb5d9b3c82233acc, type: 3}
+  appearSound: {fileID: 8300000, guid: ae75739dc8fe6094a9d3d7e531c6be1c, type: 3}
+  backgroundAudio: {fileID: 0}
 --- !u!70 &-2342123612355729672
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
